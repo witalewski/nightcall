@@ -1,0 +1,35 @@
+{
+  "name": "lightswitch",
+  "version": "0.1.0",
+  "description": "Automatically toggle between Light and Dark system themes based on sunrise and sunset",
+  "main": "src/index.js",
+  "author": "Kris Witalewski",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "axios": "0.18.0",
+    "mkdirp": "0.5.1",
+    "node-persist": "3.0.1",
+    "node-wifiscanner": "0.2.1",
+    "public-ip": "2.4.0",
+    "rimraf": "2.6.2",
+    "suncalc": "1.8.0",
+    "wifi-scanner": "0.0.4",
+    "winston": "3.1.0"
+  },
+  "scripts": {
+    "install": "node src/index.js start",
+    "start": "node src/index.js start",
+    "stop": "node src/index.js stop",
+    "test": "jest",
+    "uninstall": "node src/index.js uninstall"
+  },
+  "bin": {
+    "lightswitch": "./src/index.js"
+  },
+  "preferGlobal": true,
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "sinon": "^6.3.5"
+  }
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>Label</key>
+        <string>tech.witalewski.lightswitch</string>
+
+        <key>WorkingDirectory</key>
+        <string>$LIGHTSWITCH_DIR</string>
+
+        <key>ProgramArguments</key>
+        <array>
+            <string>/usr/local/bin/node</string>
+            <string>-e</string>
+            <string>'require("$LIGHTSWITCH_DIR/src/lightswitch").performUpdate()'</string>
+        </array>
+
+        <key>RunAtLoad</key>
+        <true/>
+
+        <key>KeepAlive</key>
+        <false/>
+
+        <key>StartCalendarInterval</key>
+        <dict>
+            <key>Minute</key>
+            <integer>$MINUTES</integer>
+            <key>Hour</key>
+            <integer>$HOURS</integer>
+        </dict>
+
+    </dict>
+</plist>
