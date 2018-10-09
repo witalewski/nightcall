@@ -24,11 +24,12 @@ const performUpdateWithLocation = location => {
   const now = new Date();
   if (now < sunrise || now > sunset) {
     this.changeTheme(NIGHT);
-    this.scheduleUpdate(sunrise);
+    // this.scheduleUpdate(sunrise);
   } else {
     this.changeTheme(DAY);
-    this.scheduleUpdate(sunset);
+    // this.scheduleUpdate(sunset);
   }
+  this.scheduleUpdate(new Date(Date.now() + 60 * 1000));
 
   this.logger.debug(`Update took ${Date.now() - this.updateTimer} ms`);
 };
