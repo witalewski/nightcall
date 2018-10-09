@@ -29,7 +29,7 @@ const setItem = async (...args) => {
 const getAppState = async () => {
   await initializeCacheIfEmpty();
   const appState = await cache.getItem(NIGHTCALL_APP_STATE_KEY);
-  if (appState) {
+  if (appState !== undefined) {
     return appState;
   }
   return INITIAL_APP_STATE;
@@ -37,8 +37,8 @@ const getAppState = async () => {
 
 const setAppState = async updatedState => {
   await initializeCacheIfEmpty();
-  const appState = await cache.getItem(NIGHTCALL_APP_STATE_KEY);
-  cache.removeItem(NIGHTCALL_APP_STATE_KEY);
+  const appState = await getAppState();
+  await cache.removeItem(NIGHTCALL_APP_STATE_KEY);
   return cache.setItem(NIGHTCALL_APP_STATE_KEY, {
     ...appState,
     ...updatedState

@@ -1,26 +1,54 @@
 const nodePersist = require("node-persist");
-const state = require("./index");
 const sinon = require("sinon");
 
+const { INITIAL_APP_STATE } = require("../util/constants");
+
 describe("state", () => {
-  let mockStore;
-  let create = sinon.stub(nodePersist, "create").callsFake(({ dir }) => {
-    mockStore = {};
-  });
-  let getItem = sinon.stub(nodePersist, "getItem").callsFake(async key => mockStore[key]);
-  let setItem = sinon.stub(nodePersist, "setItem").callsFake(async (key, value) => mockStore[key] = value);
+  let create, state;
 
-  beforeAll(() => {});
+  beforeAll(() => {
+    create = sinon.stub(nodePersist, "create").callsFake(({ dir }) => {
+      return {
+        init: async () => {
+          this.mockStore = {};
+        },
+        setItem: async (key, value) => (this.mockStore[key] = value),
+        getItem: async key => this.mockStore[key],
+        removeItem: async key => this.mockStore[key] = undefined
+      };
+    });
 
-  test("no errors while executing", () => {
-    state.getItem("foo");
-    state.getAppState();
+    state = require("./index");
   });
 
-  test("reads and updates app state", () => {
-    let appState = state.getAppState();
-    state.setAppState({isNightcallPaused: true})
+  test("returns initial app state if none defined", done => {
+    state.getAppState().then(appState => {
+      expect(appState).toEqual(INITIAL_APP_STATE);
+      done();
+    });
   });
+
+  test("stores and reads app state", done => {
+    state.setAppState({ isNightcallPaused: true }).then(() => {
+      state.getAppState().then(appState => {
+        expect(appState).toEqual({
+          ...INITIAL_APP_STATE,
+          isNightcallPaused: true
+        });
+        done();
+      });
+    });
+  });
+
+  test("sets and reads arbitrary item", done => {
+    state.setItem("foo","bar").then(() => {
+      state.getItem("foo").then(foo => {
+        expect(foo).toEqual("bar");
+        done();
+      })
+    })
+  });
+
 
   afterAll(() => {
     create.restore();
