@@ -102,7 +102,7 @@ const removeLaunchAgentFile = () => {
             `${os.homedir()}/Library/LaunchAgents/tech.witalewski.lightswitch.plist`,
             err => {
               if (err) {
-                loger.error("Failed to remove Lightswitch Launch Agent file.");
+                this.logger.error("Failed to remove Lightswitch Launch Agent file.");
                 reject();
               }
               this.logger.info("Removed Lightswitch Launch Agent file.");
