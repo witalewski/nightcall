@@ -1,5 +1,6 @@
 const os = require("os");
-const nockExec = require("nock-exec");
+const sinon = require("sinon");
+const childProcess = require("child_process");
 
 const logger = require("../util/logger");
 jest.mock("../util/logger");
@@ -7,12 +8,19 @@ jest.mock("../util/logger");
 const osProxy = require("./osProxy")({ logger });
 
 const ERROR = "ERROR";
+const MESSAGE = "MESSAGE";
 
 describe("osProxy", () => {
+  let stubs = [];
+
+  afterEach(() => {
+    stubs.forEach(stub => stub.restore());
+    stubs = [];
+  });
+
   test("loads launch agent", done => {
-    nockExec(
-      `launchctl load ${os.homedir()}/Library/LaunchAgents/tech.witalewski.lightswitch.plist`
-    ).reply();
+    const exec = sinon.stub(childProcess, "exec").callsArg(2);
+    stubs = [exec];
 
     osProxy.loadLaunchAgent().then(() => {
       done();
@@ -20,9 +28,8 @@ describe("osProxy", () => {
   });
 
   test("handles error while loading launch agent", done => {
-    nockExec(
-      `launchctl load ${os.homedir()}/Library/LaunchAgents/tech.witalewski.lightswitch.plist`
-    ).err(ERROR);
+    const exec = sinon.stub(childProcess, "exec").callsArgWith(2, ERROR);
+    stubs = [exec];
 
     osProxy.loadLaunchAgent().catch(() => {
       done();
@@ -30,7 +37,8 @@ describe("osProxy", () => {
   });
 
   test("removes launch agent", done => {
-    nockExec("launchctl remove tech.witalewski.lightswitch").reply();
+    const exec = sinon.stub(childProcess, "exec").callsArgWith(2);
+    stubs = [exec];
 
     osProxy.removeLaunchAgent().then(() => {
       done();
@@ -38,84 +46,120 @@ describe("osProxy", () => {
   });
 
   test("handles error while removing launch agent", done => {
-    nockExec("launchctl remove tech.witalewski.lightswitch").err(ERROR);
+    const exec = sinon.stub(childProcess, "exec").callsArgWith(2, ERROR);
+    stubs = [exec];
 
     osProxy.removeLaunchAgent().catch(() => {
       done();
     });
   });
 
-  test("checks if launch agent is loaded (when it is)", done => {
-    nockExec("launchctl list | grep tech.witalewski.lightswitch").reply(
-      0,
-      "- 0 tech.witalewski.lightswitch"
-    );
+  test("gets loaded launch agents", done => {
+    const exec = sinon
+      .stub(childProcess, "exec")
+      .callsArgWith(2, null, "- 0 local.lightswitch.testBase\n4884 0 local.lightswitch.testAux\n");
+    stubs = [exec];
 
-    osProxy.isLaunchAgentLoaded().then(result => {
-      expect(result).toEqual(true);
+    osProxy.getLoadedLaunchAgents().then(result => {
+      expect(result).toEqual([
+        { id: "local.lightswitch.testBase", isRunning: false },
+        { pid: "4884", id: "local.lightswitch.testAux", isRunning: true }
+      ]);
       done();
     });
   });
 
-  test("checks if launch agent is loaded (when it is not)", done => {
-    nockExec("launchctl list | grep tech.witalewski.lightswitch").reply();
+  test("returns empty agents list when none are loaded", done => {
+    const exec = sinon.stub(childProcess, "exec").callsArg(2);
+    stubs = [exec];
 
-    osProxy.isLaunchAgentLoaded().then(result => {
-      expect(result).toEqual(false);
+    osProxy.getLoadedLaunchAgents().then(result => {
+      expect(result).toEqual([]);
       done();
     });
   });
 
   test("shows dialog", done => {
-    nockExec(
-      `osascript -e 'tell app "System Events" to display dialog "MESSAGE" with title "Lightswitch"'`
-    ).reply();
+    const exec = sinon
+      .stub(childProcess, "exec")
+      .callsFake((command, options, callback) => {
+        expect(command).toEqual(
+          `osascript -e 'tell app "System Events" to display dialog "${MESSAGE}" with title "Lightswitch"'`
+        );
+        callback();
+      });
+    stubs = [exec];
 
-    osProxy.showDialog("MESSAGE").then(() => {
+    osProxy.showDialog(MESSAGE).then(() => {
+      expect(exec.called).toEqual(true);
       done();
     });
   });
 
   test("handles error while showing dialog", done => {
-    nockExec(
-      `osascript -e 'tell app "System Events" to display dialog "MESSAGE" with title "Lightswitch"'`
-    )
-      .err(ERROR)
-      .reply();
+    const exec = sinon
+      .stub(childProcess, "exec")
+      .callsFake((command, options, callback) => {
+        expect(command).toEqual(
+          `osascript -e 'tell app "System Events" to display dialog "${MESSAGE}" with title "Lightswitch"'`
+        );
+        callback(ERROR);
+      });
+    stubs = [exec];
 
-    osProxy.showDialog("MESSAGE").catch(() => {
+    osProxy.showDialog(MESSAGE).catch(() => {
+      expect(exec.called).toEqual(true);
       done();
     });
   });
 
   test("sets dark mode", done => {
-    nockExec(
-      `osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to true'`
-    ).reply();
+    const exec = sinon
+      .stub(childProcess, "exec")
+      .callsFake((command, options, callback) => {
+        expect(command).toEqual(
+          `osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to true'`
+        );
+        callback();
+      });
+    stubs = [exec];
 
     osProxy.setOSDarkMode(true).then(() => {
+      expect(exec.called).toEqual(true);
       done();
     });
   });
 
   test("sets light mode", done => {
-    nockExec(
-      `osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to false'`
-    ).reply();
+    const exec = sinon
+      .stub(childProcess, "exec")
+      .callsFake((command, options, callback) => {
+        expect(command).toEqual(
+          `osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to false'`
+        );
+        callback();
+      });
+    stubs = [exec];
 
     osProxy.setOSDarkMode(false).then(() => {
+      expect(exec.called).toEqual(true);
       done();
     });
   });
 
   test("handles error while setting dark mode", done => {
-    nockExec(
-      `osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to true'`
-    )
-      .err(ERROR)
-      .reply();
+    const exec = sinon
+      .stub(childProcess, "exec")
+      .callsFake((command, options, callback) => {
+        expect(command).toEqual(
+          `osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to true'`
+        );
+        callback(ERROR, null, ERROR);
+      });
+    stubs = [exec];
 
     osProxy.setOSDarkMode(true).catch(() => {
+      expect(exec.called).toEqual(true);
       done();
     });
   });

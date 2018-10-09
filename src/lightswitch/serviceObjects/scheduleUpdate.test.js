@@ -5,8 +5,8 @@ const mockLaunchAgentFileTemplate =
   "Lightswitch dir: $LIGHTSWITCH_DIR, Minutes: $MINUTES, Hours: $HOURS";
 const mockOsProxy = {
   loadLaunchAgent: jest.fn(() => new Promise((resolve, reject) => resolve())),
-  isLaunchAgentLoaded: jest.fn(
-    () => new Promise((resolve, reject) => resolve())
+  getLoadedLaunchAgents: jest.fn(
+    () => new Promise((resolve, reject) => resolve([]))
   ),
   removeLaunchAgent: jest.fn(() => new Promise((resolve, reject) => resolve()))
 };
@@ -41,6 +41,7 @@ describe("scheduleUpdate", () => {
 
     scheduleUpdate(now).then(() => {
       expect(mockFsProxy.writeLaunchAgentFile).toHaveBeenCalledWith(
+        "local.lightswitch.base",
         expectedResult
       );
       expect(mockOsProxy.loadLaunchAgent).toHaveBeenCalled();

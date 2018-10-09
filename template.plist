@@ -3,20 +3,19 @@
 <plist version="1.0">
     <dict>
         <key>Label</key>
-        <string>tech.witalewski.lightswitch</string>
+        <string>$AGENT_ID</string>
 
         <key>WorkingDirectory</key>
         <string>$LIGHTSWITCH_DIR</string>
 
         <key>ProgramArguments</key>
         <array>
-            <string>/usr/local/bin/node</string>
-            <string>-e</string>
-            <string>'require("$LIGHTSWITCH_DIR/src/lightswitch").performUpdate()'</string>
+			<string>/usr/local/bin/node</string>
+            <string>$LIGHTSWITCH_DIR/src/start.js</string>
         </array>
 
         <key>RunAtLoad</key>
-        <true/>
+        <false/>
 
         <key>KeepAlive</key>
         <false/>

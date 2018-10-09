@@ -5,10 +5,10 @@ const os = require("os");
 const mkdirp = require("mkdirp");
 const rimraf = require("rimraf");
 
-const readLaunchAgentTemplate = async () => {
+const readLaunchAgentTemplate = async path => {
   return new Promise((resolve, reject) => {
     fs.readFile(
-      "tech.witalewski.lightswitch.plist",
+      path,
       "utf8",
       (err, contents) => {
         if (err || !contents) {
@@ -21,7 +21,7 @@ const readLaunchAgentTemplate = async () => {
   });
 };
 
-const writeLaunchAgentFile = async contents => {
+const writeLaunchAgentFile = async (agentId, contents) => {
   this.logger.info("Writing lightswitch Launch Agent file...");
   return new Promise((resolve, reject) => {
     mkdirp(`${os.homedir()}/Library/LaunchAgents`, err => {
@@ -29,7 +29,7 @@ const writeLaunchAgentFile = async contents => {
         reject(err);
       } else {
         fs.writeFile(
-          `${os.homedir()}/Library/LaunchAgents/tech.witalewski.lightswitch.plist`,
+          `${os.homedir()}/Library/LaunchAgents/${agentId}.plist`,
           contents,
           err => {
             if (err) {

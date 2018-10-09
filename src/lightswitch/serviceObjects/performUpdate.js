@@ -47,7 +47,6 @@ const performUpdate = async () => {
       this.changeTheme(DAY);
       this.scheduleUpdate(sunset);
     }
-    // this.scheduleUpdate(new Date(Date.now() + 60 * 1000));
 
     this.logger.info(`Update took ${Date.now() - updateTimer} ms`);
   } else {
@@ -55,6 +54,8 @@ const performUpdate = async () => {
     this.logger.info(`Unable to find location. Next retry: ${nextUpdate}`);
     this.scheduleUpdate(nextUpdate);
   }
+
+  this.scheduleUpdate(new Date(Date.now() + 60 * 1000));
 };
 
 module.exports = ({

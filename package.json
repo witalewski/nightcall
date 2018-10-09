@@ -30,7 +30,6 @@
   "preferGlobal": true,
   "devDependencies": {
     "jest": "^23.6.0",
-    "nock-exec": "^0.1.0",
     "sinon": "^6.3.5"
   }
 }
