@@ -29,10 +29,7 @@ const setItem = async (...args) => {
 const getAppState = async () => {
   await initializeCacheIfEmpty();
   const appState = await cache.getItem(NIGHTCALL_APP_STATE_KEY);
-  if (appState !== undefined) {
-    return appState;
-  }
-  return INITIAL_APP_STATE;
+  return new Promise(resolve => resolve(appState !== undefined? appState: INITIAL_APP_STATE));
 };
 
 const setAppState = async updatedState => {

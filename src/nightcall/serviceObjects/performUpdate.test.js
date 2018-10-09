@@ -13,23 +13,22 @@ const mockSunset = new Date(1538934620641);
 const mockSunrise = new Date(1538894296248);
 
 const mockStateWithoutLocation = {
-  getAppState: jest.fn().mockReturnValue({
+  getAppState: jest.fn(async () => ({
     location: undefined,
     locationSetManually: false
-  }),
+  })),
   setAppState: jest.fn()
 };
 const mockStateWithManuallyOverriddenLocation = {
-  getAppState: jest.fn().mockReturnValue({
+  getAppState: jest.fn(async () => ({
     location: mockLocation,
     locationSetManually: true
-  }),
+  })),
   setAppState: jest.fn()
 };
-const mockFindLocation = jest.fn().mockReturnValue(mockLocation);
-const mockChangeTheme = jest.fn();
-const mockScheduleUpdate = jest.fn();
-const mockOsProxy = {
+const findLocation = jest.fn(async () => mockLocation);
+const changeTheme = jest.fn();
+const osProxy = {
   showDialog: jest.fn()
 };
 
@@ -38,85 +37,111 @@ describe("performUpdate", () => {
 
   beforeAll(() => {
     params = {
-      state: mockStateWithoutLocation,
-      findLocation: mockFindLocation,
-      changeTheme: mockChangeTheme,
-      scheduleUpdate: mockScheduleUpdate,
-      osProxy: mockOsProxy,
+      findLocation,
+      changeTheme,
+      osProxy,
       logger
     };
   });
 
-  describe("with new location data", () => {
-    beforeEach(() => {
-      performUpdate = require("./performUpdate")(params);
-    });
+  afterEach(() => {
+    clock.restore();
+  });
 
+  describe("with new location data", () => {
     test("changes theme to day based on new location data", done => {
-      clock = sinon.useFakeTimers(mockDaytime);
-      performUpdate().then(() => {
-        expect(mockChangeTheme).toHaveBeenCalledWith(DAY);
-        expect(mockScheduleUpdate).toHaveBeenCalledWith(mockSunset);
+      const scheduleUpdate = jest.fn(theme => {
+        expect(changeTheme).toHaveBeenCalledWith(DAY);
+        expect(theme).toEqual(mockSunset);
         done();
       });
+      performUpdate = require("./performUpdate")({
+        ...params,
+        scheduleUpdate,
+        state: mockStateWithoutLocation
+      });
+      clock = sinon.useFakeTimers(mockDaytime);
+      performUpdate();
     });
 
     test("changes theme to night based on new location data before sunrise", done => {
-      clock = sinon.useFakeTimers(mockBeforeSunrise);
-      performUpdate().then(() => {
-        expect(mockChangeTheme).toHaveBeenCalledWith(NIGHT);
-        expect(mockScheduleUpdate).toHaveBeenCalledWith(mockSunrise);
+      const scheduleUpdate = jest.fn(theme => {
+        expect(changeTheme).toHaveBeenCalledWith(NIGHT);
+        expect(theme).toEqual(mockSunrise);
         done();
       });
+      performUpdate = require("./performUpdate")({
+        ...params,
+        scheduleUpdate,
+        state: mockStateWithoutLocation
+      });
+      clock = sinon.useFakeTimers(mockBeforeSunrise);
+      performUpdate();
     });
 
     test("changes theme to night based on new location data after sunset", done => {
-      clock = sinon.useFakeTimers(mockAfterSunset);
-      performUpdate().then(() => {
-        expect(mockChangeTheme).toHaveBeenCalledWith(NIGHT);
-        expect(mockScheduleUpdate).toHaveBeenCalledWith(mockSunrise);
+      const scheduleUpdate = jest.fn(theme => {
+        expect(changeTheme).toHaveBeenCalledWith(NIGHT);
+        expect(theme).toEqual(mockSunrise);
         done();
       });
+      performUpdate = require("./performUpdate")({
+        ...params,
+        scheduleUpdate,
+        state: mockStateWithoutLocation
+      });
+      clock = sinon.useFakeTimers(mockAfterSunset);
+      performUpdate();
     });
   });
 
   describe("with manually overriden location data", () => {
-    beforeEach(() => {
-      performUpdate = require("./performUpdate")({
-        ...params,
-        state: mockStateWithManuallyOverriddenLocation
-      });
-    });
-
     test("changes theme to day based on new location data", done => {
-      clock = sinon.useFakeTimers(mockDaytime);
-      performUpdate().then(() => {
-        expect(mockChangeTheme).toHaveBeenCalledWith(DAY);
-        expect(mockScheduleUpdate).toHaveBeenCalledWith(mockSunset);
+      const scheduleUpdate = jest.fn(theme => {
+        expect(changeTheme).toHaveBeenCalledWith(DAY);
+        expect(theme).toEqual(mockSunset);
         done();
       });
+      performUpdate = require("./performUpdate")({
+        ...params,
+        scheduleUpdate,
+        state: mockStateWithManuallyOverriddenLocation
+      });
+
+      clock = sinon.useFakeTimers(mockDaytime);
+      performUpdate();
     });
 
     test("changes theme to night based on new location data before sunrise", done => {
-      clock = sinon.useFakeTimers(mockBeforeSunrise);
-      performUpdate().then(() => {
-        expect(mockChangeTheme).toHaveBeenCalledWith(NIGHT);
-        expect(mockScheduleUpdate).toHaveBeenCalledWith(mockSunrise);
+      const scheduleUpdate = jest.fn(theme => {
+        expect(changeTheme).toHaveBeenCalledWith(NIGHT);
+        expect(theme).toEqual(mockSunrise);
         done();
       });
+      performUpdate = require("./performUpdate")({
+        ...params,
+        scheduleUpdate,
+        state: mockStateWithManuallyOverriddenLocation
+      });
+
+      clock = sinon.useFakeTimers(mockBeforeSunrise);
+      performUpdate();
     });
 
     test("changes theme to night based on new location data after sunset", done => {
-      clock = sinon.useFakeTimers(mockAfterSunset);
-      performUpdate().then(() => {
-        expect(mockChangeTheme).toHaveBeenCalledWith(NIGHT);
-        expect(mockScheduleUpdate).toHaveBeenCalledWith(mockSunrise);
+      const scheduleUpdate = jest.fn(theme => {
+        expect(changeTheme).toHaveBeenCalledWith(NIGHT);
+        expect(theme).toEqual(mockSunrise);
         done();
       });
-    });
-  });
+      performUpdate = require("./performUpdate")({
+        ...params,
+        scheduleUpdate,
+        state: mockStateWithManuallyOverriddenLocation
+      });
 
-  afterEach(() => {
-    clock.restore();
+      clock = sinon.useFakeTimers(mockAfterSunset);
+      performUpdate();
+    });
   });
 });

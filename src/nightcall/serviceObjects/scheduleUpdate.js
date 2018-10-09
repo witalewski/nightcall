@@ -9,21 +9,24 @@ const {
   HOURS_PLACEHOLDER_REGEX
 } = require("../util/constants");
 
+const removeLaunchAgents = async agents => {
+  const promises = [];
+  agents.forEach(({ id }) => {
+    promises.push(this.removeLaunchAgent(id));
+    promises.push(this.removeLaunchAgentFile(id));
+  });
+  return Promise.all(promises);
+};
+
 const scheduleUpdate = async date => {
   const minutes = date.getMinutes();
   const hours = date.getHours();
-  this.logger.debug(`Scheduling next update to ${hours}:${minutes}`);
 
+  this.logger.debug(`Scheduling next update to ${date}`);
   this.logger.debug(`Current pid: ${process.pid}`);
+
   const loadedLaunchAgents = await this.getLoadedLaunchAgents(BASE_AGENT_ID);
-
-  const cleanUpPromises = [];
-  loadedLaunchAgents.filter(e => !e.isRunning).forEach(({ id }) => {
-    cleanUpPromises.push(this.removeLaunchAgent(id));
-    cleanUpPromises.push(this.removeLaunchAgentFile(id));
-  });
-  await Promise.all(cleanUpPromises);
-
+  await removeLaunchAgents(loadedLaunchAgents.filter(e => !e.isRunning));
   const currentlyRunningAgent = loadedLaunchAgents.find(
     ({ isRunning }) => isRunning
   );
@@ -32,38 +35,18 @@ const scheduleUpdate = async date => {
       ? AUX_AGENT_ID
       : BASE_AGENT_ID;
 
-  return new Promise((resolve, reject) => {
-    this.readLaunchAgentTemplate("template.plist")
-      .then(contents => {
-        this.writeLaunchAgentFile(
-          targetAgentId,
-          contents
-            .replace(NIGHTCALL_DIR_PLACEHOLDER_REGEX, process.cwd())
-            .replace(AGENT_ID_PLACEHOLDER_REGEX, targetAgentId)
-            .replace(MINUTES_PLACEHOLDER_REGEX, minutes)
-            .replace(HOURS_PLACEHOLDER_REGEX, hours)
-        )
-          .then(() => {
-            this.loadLaunchAgent(targetAgentId)
-              .then(() => {
-                this.logger.debug(`Update scheduled for ${date}.`);
-                resolve();
-              })
-              .catch(err => {
-                this.logger.error("Failed to schedule update.");
-                reject(err);
-              });
-          })
-          .catch(err => {
-            this.logger.error("Failed to schedule update.");
-            reject(err);
-          });
-      })
-      .catch(err => {
-        this.logger.error("Failed to schedule update.");
-        reject(err);
-      });
-  });
+  const contents = await this.readLaunchAgentTemplate("template.plist");
+
+  await this.writeLaunchAgentFile(
+    targetAgentId,
+    contents
+      .replace(NIGHTCALL_DIR_PLACEHOLDER_REGEX, process.cwd())
+      .replace(AGENT_ID_PLACEHOLDER_REGEX, targetAgentId)
+      .replace(MINUTES_PLACEHOLDER_REGEX, minutes)
+      .replace(HOURS_PLACEHOLDER_REGEX, hours)
+  );
+
+  await this.loadLaunchAgent(targetAgentId);
 };
 
 module.exports = ({ osProxy, fsProxy, logger }) => {

@@ -12,9 +12,9 @@ describe("state", () => {
         init: async () => {
           this.mockStore = {};
         },
-        setItem: async (key, value) => (this.mockStore[key] = value),
-        getItem: async key => this.mockStore[key],
-        removeItem: async key => this.mockStore[key] = undefined
+        setItem: async (key, value) => new Promise(resolve => resolve(this.mockStore[key] = value)),
+        getItem: async key => new Promise(resolve => resolve(this.mockStore[key])),
+        removeItem: async key => new Promise(resolve => resolve(this.mockStore[key] = undefined))
       };
     });
 
