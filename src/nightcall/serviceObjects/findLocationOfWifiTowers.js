@@ -3,7 +3,7 @@
 const axios = require("axios");
 
 const findLocationOfWifiTowers = towers => {
-  this.logger.info("Attempting to find physical location of WiFi towers...");
+  this.logger.debug("Attempting to find physical location of WiFi towers...");
   return new Promise((resolve, reject) => {
     axios
       .post(
@@ -22,7 +22,7 @@ const findLocationOfWifiTowers = towers => {
           location: { lat, lng }
         } = data;
         const location = { lat, lng };
-        this.logger.info(`Location found: ${JSON.stringify(location)}`);
+        this.logger.debug(`Location found: ${JSON.stringify(location)}`);
         resolve(location);
       })
       .catch(err => reject(err));

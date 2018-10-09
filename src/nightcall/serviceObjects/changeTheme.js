@@ -3,7 +3,7 @@
 const { NIGHT } = require("../util/constants");
 
 const changeTheme = theme => {
-  this.logger.info(`Setting ${theme === NIGHT ? "dark" : "light"} theme`);
+  this.logger.debug(`Setting ${theme === NIGHT ? "dark" : "light"} theme`);
 
   this.setOSDarkMode(theme === NIGHT);
 

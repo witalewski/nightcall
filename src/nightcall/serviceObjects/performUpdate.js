@@ -7,7 +7,7 @@ const { NIGHT, DAY, RETRY_TIMEOUT } = require("../util/constants");
 const performUpdate = async () => {
   this.showDialog("Nightcall update");
   const updateTimer = Date.now();
-  this.logger.info("Updating data...");
+  this.logger.debug("Updating data...");
 
   const appState = await this.state.getAppState();
 
@@ -35,9 +35,9 @@ const performUpdate = async () => {
       sunset
     });
 
-    this.logger.info(`Daytime for ${location.lat},${location.lng}:`);
-    this.logger.info(`Sunrise: ${sunrise}`);
-    this.logger.info(`Sunset: ${sunset}`);
+    this.logger.debug(`Daytime for ${location.lat},${location.lng}:`);
+    this.logger.debug(`Sunrise: ${sunrise}`);
+    this.logger.debug(`Sunset: ${sunset}`);
 
     const now = new Date();
     if (now < sunrise || now > sunset) {
@@ -48,10 +48,10 @@ const performUpdate = async () => {
       this.scheduleUpdate(sunset);
     }
 
-    this.logger.info(`Update took ${Date.now() - updateTimer} ms`);
+    this.logger.debug(`Update took ${Date.now() - updateTimer} ms`);
   } else {
     const nextUpdate = new Date(Date.now() + RETRY_TIMEOUT);
-    this.logger.info(`Unable to find location. Next retry: ${nextUpdate}`);
+    this.logger.debug(`Unable to find location. Next retry: ${nextUpdate}`);
     this.scheduleUpdate(nextUpdate);
   }
 };

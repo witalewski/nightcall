@@ -22,7 +22,7 @@ const readLaunchAgentTemplate = async path => {
 };
 
 const writeLaunchAgentFile = async (agentId, contents) => {
-  this.logger.info("Writing nightcall Launch Agent file...");
+  this.logger.debug("Writing nightcall Launch Agent file...");
   return new Promise((resolve, reject) => {
     mkdirp(`${os.homedir()}/Library/LaunchAgents`, err => {
       if (err) {
@@ -38,7 +38,7 @@ const writeLaunchAgentFile = async (agentId, contents) => {
               );
               reject(err);
             } else {
-              this.logger.info("Nightcall Launch Agent file written.");
+              this.logger.debug("Nightcall Launch Agent file written.");
               resolve();
             }
           }
@@ -49,19 +49,19 @@ const writeLaunchAgentFile = async (agentId, contents) => {
 };
 
 const removeLogs = async () => {
-  this.logger.info("Removing Nightcall logs...");
+  this.logger.debug("Removing Nightcall logs...");
   return new Promise((resolve, reject) => {
     fs.access(`nightcall.log`, fs.constants.F_OK, err => {
       if (err) {
-        this.logger.info("No log file was present.");
+        this.logger.debug("No log file was present.");
         resolve();
       } else {
         fs.unlink(`nightcall.log`, err => {
           if (err) {
-            this.logger.info("Failed to remove Nightcall logs file.");
+            this.logger.debug("Failed to remove Nightcall logs file.");
             reject();
           } else {
-            this.logger.info("Removed Nightcall logs file.");
+            this.logger.debug("Removed Nightcall logs file.");
             resolve();
           }
         });
@@ -71,15 +71,15 @@ const removeLogs = async () => {
 };
 
 const removeCache = async () => {
-  this.logger.info("Removing Nightcall cache directory...");
+  this.logger.debug("Removing Nightcall cache directory...");
   return new Promise((resolve, reject) => {
     fs.access(`cache`, fs.constants.F_OK, err => {
       if (err) {
-        this.logger.info("No cache directory was present.");
+        this.logger.debug("No cache directory was present.");
         resolve();
       } else {
         rimraf("cache", () => {
-          this.logger.info("Successfully removed Nightcall cache directory.");
+          this.logger.debug("Successfully removed Nightcall cache directory.");
           resolve();
         });
       }
@@ -88,14 +88,14 @@ const removeCache = async () => {
 };
 
 const removeLaunchAgentFile = () => {
-  this.logger.info("Removing Nightcall Launch Agent file...");
+  this.logger.debug("Removing Nightcall Launch Agent file...");
   return new Promise((resolve, reject) => {
     fs.access(
       `${os.homedir()}/Library/LaunchAgents/tech.witalewski.nightcall.plist`,
       fs.constants.F_OK,
       err => {
         if (err) {
-          this.logger.info("No Launch Agent file was present.");
+          this.logger.debug("No Launch Agent file was present.");
           resolve();
         } else {
           fs.unlink(
@@ -105,7 +105,7 @@ const removeLaunchAgentFile = () => {
                 this.logger.error("Failed to remove Nightcall Launch Agent file.");
                 reject();
               }
-              this.logger.info("Removed Nightcall Launch Agent file.");
+              this.logger.debug("Removed Nightcall Launch Agent file.");
               resolve();
             }
           );

@@ -3,7 +3,7 @@
 const axios = require("axios");
 
 const findLocationOfIP = ip => {
-  this.logger.info("Attempting to find physical location of public IP...");
+  this.logger.debug("Attempting to find physical location of public IP...");
   return new Promise((resolve, reject) => {
     axios
       .get(`http://api.ipstack.com/${ip}`, {
@@ -12,7 +12,7 @@ const findLocationOfIP = ip => {
       .then(({ data }) => {
         const { latitude, longitude } = data;
         const location = { lat: latitude, lng: longitude };
-        this.logger.info(`Location found: ${JSON.stringify(location)}`);
+        this.logger.debug(`Location found: ${JSON.stringify(location)}`);
         resolve(location);
       })
       .catch(err => reject(err));

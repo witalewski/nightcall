@@ -5,7 +5,7 @@ const os = require("os");
 const { AGENT_REGEX } = require("../util/constants");
 
 const loadLaunchAgent = async agentId => {
-  this.logger.info("Loading Nightcall Launch Agent...");
+  this.logger.debug("Loading Nightcall Launch Agent...");
   return new Promise((resolve, reject) => {
     childProcess.exec(
       `launchctl load ${os.homedir()}/Library/LaunchAgents/${agentId}.plist`,
@@ -15,7 +15,7 @@ const loadLaunchAgent = async agentId => {
           reject(error, stdout, stderr);
           this.logger.error("Nightcall Launch Agent failed to load.");
         } else {
-          this.logger.info("Nightcall Launch Agent loaded.");
+          this.logger.debug("Nightcall Launch Agent loaded.");
           resolve();
         }
       }
@@ -24,7 +24,7 @@ const loadLaunchAgent = async agentId => {
 };
 
 const removeLaunchAgent = async agentId => {
-  this.logger.info("Removing nightcall Launch Agent...");
+  this.logger.debug("Removing nightcall Launch Agent...");
   return new Promise((resolve, reject) => {
     childProcess.exec(
       `launchctl unload ${os.homedir()}/Library/LaunchAgents/${agentId}.plist`,
@@ -34,7 +34,7 @@ const removeLaunchAgent = async agentId => {
           this.logger.error(error, stdout, stderr);
           reject(error, stdout, stderr);
         } else {
-          this.logger.info("Nightcall Launch Agent removed.");
+          this.logger.debug("Nightcall Launch Agent removed.");
           resolve();
         }
       }
@@ -43,7 +43,7 @@ const removeLaunchAgent = async agentId => {
 };
 
 const getLoadedLaunchAgents = async () => {
-  this.logger.info("Checking if Nightcall user agent is loaded...");
+  this.logger.debug("Checking if Nightcall user agent is loaded...");
   return new Promise((resolve, reject) => {
     childProcess.exec(
       "launchctl list | grep local.nightcall",
@@ -65,15 +65,15 @@ const getLoadedLaunchAgents = async () => {
               return { pid, id, isRunning };
             });
           if (agents) {
-            this.logger.info(
+            this.logger.debug(
               `Nightcall launch agents loaded: ${JSON.stringify(agents)}`
             );
           } else {
-            this.logger.info("No nightcall agents loaded.");
+            this.logger.debug("No nightcall agents loaded.");
           }
           resolve(agents);
         } else {
-          this.logger.info("No nightcall agents loaded.");
+          this.logger.debug("No nightcall agents loaded.");
           resolve([]);
         }
       }

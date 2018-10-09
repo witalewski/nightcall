@@ -12,7 +12,7 @@ const {
 const scheduleUpdate = async date => {
   const minutes = date.getMinutes();
   const hours = date.getHours();
-  this.logger.info(`Scheduling next update to ${hours}:${minutes}`);
+  this.logger.debug(`Scheduling next update to ${hours}:${minutes}`);
 
   this.logger.debug(`Current pid: ${process.pid}`);
   const loadedLaunchAgents = await this.getLoadedLaunchAgents(BASE_AGENT_ID);
@@ -46,7 +46,7 @@ const scheduleUpdate = async date => {
           .then(() => {
             this.loadLaunchAgent(targetAgentId)
               .then(() => {
-                this.logger.info(`Update scheduled for ${date}.`);
+                this.logger.debug(`Update scheduled for ${date}.`);
                 resolve();
               })
               .catch(err => {

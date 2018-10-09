@@ -1,12 +1,12 @@
 "use strict";
 
 const getIP = () => {
-  this.logger.info("Checking public IP...");
+  this.logger.debug("Checking public IP...");
   return new Promise((resolve, reject) => {
     this.publicIP
       .v4()
       .then(ip => {
-        this.logger.info(`Public IP: ${ip}`);
+        this.logger.debug(`Public IP: ${ip}`);
         resolve(ip);
       })
       .catch(err => reject(err));
