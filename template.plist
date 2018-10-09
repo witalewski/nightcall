@@ -6,12 +6,12 @@
         <string>$AGENT_ID</string>
 
         <key>WorkingDirectory</key>
-        <string>$LIGHTSWITCH_DIR</string>
+        <string>$NIGHTCALL_DIR</string>
 
         <key>ProgramArguments</key>
         <array>
 			<string>/usr/local/bin/node</string>
-            <string>$LIGHTSWITCH_DIR/src/start.js</string>
+            <string>$NIGHTCALL_DIR/src/start.js</string>
         </array>
 
         <key>RunAtLoad</key>

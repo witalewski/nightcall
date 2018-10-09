@@ -57,13 +57,13 @@ describe("osProxy", () => {
   test("gets loaded launch agents", done => {
     const exec = sinon
       .stub(childProcess, "exec")
-      .callsArgWith(2, null, "- 0 local.lightswitch.testBase\n4884 0 local.lightswitch.testAux\n");
+      .callsArgWith(2, null, "- 0 local.nightcall.testBase\n4884 0 local.nightcall.testAux\n");
     stubs = [exec];
 
     osProxy.getLoadedLaunchAgents().then(result => {
       expect(result).toEqual([
-        { id: "local.lightswitch.testBase", isRunning: false },
-        { pid: "4884", id: "local.lightswitch.testAux", isRunning: true }
+        { id: "local.nightcall.testBase", isRunning: false },
+        { pid: "4884", id: "local.nightcall.testAux", isRunning: true }
       ]);
       done();
     });
@@ -84,7 +84,7 @@ describe("osProxy", () => {
       .stub(childProcess, "exec")
       .callsFake((command, options, callback) => {
         expect(command).toEqual(
-          `osascript -e 'tell app "System Events" to display dialog "${MESSAGE}" with title "Lightswitch"'`
+          `osascript -e 'tell app "System Events" to display dialog "${MESSAGE}" with title "Nightcall"'`
         );
         callback();
       });
@@ -101,7 +101,7 @@ describe("osProxy", () => {
       .stub(childProcess, "exec")
       .callsFake((command, options, callback) => {
         expect(command).toEqual(
-          `osascript -e 'tell app "System Events" to display dialog "${MESSAGE}" with title "Lightswitch"'`
+          `osascript -e 'tell app "System Events" to display dialog "${MESSAGE}" with title "Nightcall"'`
         );
         callback(ERROR);
       });

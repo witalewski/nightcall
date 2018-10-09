@@ -2,7 +2,7 @@ const logger = require("../util/logger");
 jest.mock("../util/logger");
 
 const mockLaunchAgentFileTemplate =
-  "Lightswitch dir: $LIGHTSWITCH_DIR, Minutes: $MINUTES, Hours: $HOURS";
+  "Nightcall dir: $NIGHTCALL_DIR, Minutes: $MINUTES, Hours: $HOURS";
 const mockOsProxy = {
   loadLaunchAgent: jest.fn(() => new Promise((resolve, reject) => resolve())),
   getLoadedLaunchAgents: jest.fn(
@@ -36,12 +36,12 @@ describe("scheduleUpdate", () => {
 
   test("schedules to update at provided time", done => {
     const now = new Date();
-    const expectedResult = `Lightswitch dir: ${process.cwd()}, Minutes: ${now.getMinutes()}, Hours: ${now.getHours()}`;
+    const expectedResult = `Nightcall dir: ${process.cwd()}, Minutes: ${now.getMinutes()}, Hours: ${now.getHours()}`;
     scheduleUpdate = require("./scheduleUpdate")(params);
 
     scheduleUpdate(now).then(() => {
       expect(mockFsProxy.writeLaunchAgentFile).toHaveBeenCalledWith(
-        "local.lightswitch.base",
+        "local.nightcall.base",
         expectedResult
       );
       expect(mockOsProxy.loadLaunchAgent).toHaveBeenCalled();

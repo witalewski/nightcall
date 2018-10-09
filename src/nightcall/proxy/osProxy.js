@@ -5,7 +5,7 @@ const os = require("os");
 const { AGENT_REGEX } = require("../util/constants");
 
 const loadLaunchAgent = async agentId => {
-  this.logger.info("Loading Lightswitch Launch Agent...");
+  this.logger.info("Loading Nightcall Launch Agent...");
   return new Promise((resolve, reject) => {
     childProcess.exec(
       `launchctl load ${os.homedir()}/Library/LaunchAgents/${agentId}.plist`,
@@ -13,9 +13,9 @@ const loadLaunchAgent = async agentId => {
       (error, stdout, stderr) => {
         if (error || stdout || stderr) {
           reject(error, stdout, stderr);
-          this.logger.error("Lightswitch Launch Agent failed to load.");
+          this.logger.error("Nightcall Launch Agent failed to load.");
         } else {
-          this.logger.info("Lightswitch Launch Agent loaded.");
+          this.logger.info("Nightcall Launch Agent loaded.");
           resolve();
         }
       }
@@ -24,7 +24,7 @@ const loadLaunchAgent = async agentId => {
 };
 
 const removeLaunchAgent = async agentId => {
-  this.logger.info("Removing lightswitch Launch Agent...");
+  this.logger.info("Removing nightcall Launch Agent...");
   return new Promise((resolve, reject) => {
     childProcess.exec(
       `launchctl unload ${os.homedir()}/Library/LaunchAgents/${agentId}.plist`,
@@ -34,7 +34,7 @@ const removeLaunchAgent = async agentId => {
           this.logger.error(error, stdout, stderr);
           reject(error, stdout, stderr);
         } else {
-          this.logger.info("Lightswitch Launch Agent removed.");
+          this.logger.info("Nightcall Launch Agent removed.");
           resolve();
         }
       }
@@ -43,10 +43,10 @@ const removeLaunchAgent = async agentId => {
 };
 
 const getLoadedLaunchAgents = async () => {
-  this.logger.info("Checking if Lightswitch user agent is loaded...");
+  this.logger.info("Checking if Nightcall user agent is loaded...");
   return new Promise((resolve, reject) => {
     childProcess.exec(
-      "launchctl list | grep local.lightswitch",
+      "launchctl list | grep local.nightcall",
       {},
       (error, stdout, stderr) => {
         if (stdout) {
@@ -66,14 +66,14 @@ const getLoadedLaunchAgents = async () => {
             });
           if (agents) {
             this.logger.info(
-              `Lightswitch launch agents loaded: ${JSON.stringify(agents)}`
+              `Nightcall launch agents loaded: ${JSON.stringify(agents)}`
             );
           } else {
-            this.logger.info("No lightswitch agents loaded.");
+            this.logger.info("No nightcall agents loaded.");
           }
           resolve(agents);
         } else {
-          this.logger.info("No lightswitch agents loaded.");
+          this.logger.info("No nightcall agents loaded.");
           resolve([]);
         }
       }
@@ -84,7 +84,7 @@ const getLoadedLaunchAgents = async () => {
 const showDialog = async msg => {
   return new Promise((resolve, reject) => {
     childProcess.exec(
-      `osascript -e 'tell app "System Events" to display dialog "${msg}" with title "Lightswitch"'`,
+      `osascript -e 'tell app "System Events" to display dialog "${msg}" with title "Nightcall"'`,
       {},
       (error, stdout, stderr) => {
         if (error || stderr) {

@@ -2,4 +2,4 @@
 
 "use strict";
 
-require("./lightswitch").performUpdate();
+require("./nightcall").performUpdate();

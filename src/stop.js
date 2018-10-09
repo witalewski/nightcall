@@ -1,5 +1,5 @@
 "use strict";
 
-const { removeLaunchAgent } = require("./lightswitch/proxy/osProxy");
+const { removeLaunchAgent } = require("./nightcall/proxy/osProxy");
 
 removeLaunchAgent();

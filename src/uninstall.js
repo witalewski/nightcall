@@ -1,20 +1,25 @@
 "use strict";
 
+const logger = require("./nightcall/util/logger");
 const {
   removeLaunchAgent,
-  isLaunchAgentLoaded
-} = require("./lightswitch/proxy/osProxy");
+  getLoadedLaunchAgents
+} = require("./nightcall/proxy/osProxy")({ logger });
 const {
   removeLogs,
   removeCache,
   removeLaunchAgentFile
-} = require("./lightswitch/proxy/fsProxy");
+} = require("./nightcall/proxy/fsProxy")({ logger });
+const { BASE_AGENT_ID } = require("./nightcall/util/constants");
 
-isLaunchAgentLoaded().then(async launchAgentLoaded => {
-  if (launchAgentLoaded) {
-    await removeLaunchAgent();
-  }
-  removeLaunchAgentFile();
-  removeLogs();
-  removeCache();
+getLoadedLaunchAgents(BASE_AGENT_ID).then(loadedLaunchAgents => {
+  const cleanUpPromises = [];
+  loadedLaunchAgents.filter(e => !e.isRunning).forEach(({ id }) => {
+    cleanUpPromises.push(removeLaunchAgent(id));
+    cleanUpPromises.push(removeLaunchAgentFile(id));
+  });
+  Promise.all(cleanUpPromises).then(() => {
+    removeLogs();
+    removeCache();
+  });
 });

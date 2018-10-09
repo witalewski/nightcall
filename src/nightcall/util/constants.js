@@ -3,13 +3,13 @@ const RETRY_TIMEOUT = 60 * 60 * 1000;
 const NIGHT = "night";
 const DAY = "day";
 
-const LIGHTSWITCH_APP_STATE_KEY = "lightswitchAppState";
+const NIGHTCALL_APP_STATE_KEY = "nightcallAppState";
 
-const BASE_AGENT_ID = "local.lightswitch.base";
-const AUX_AGENT_ID = "local.lightswitch.aux";
-const AGENT_REGEX = /local\.lightswitch\.\w+/;
+const BASE_AGENT_ID = "local.nightcall.base";
+const AUX_AGENT_ID = "local.nightcall.aux";
+const AGENT_REGEX = /local\.nightcall\.\w+/;
 
-const LIGHTSWITCH_DIR_PLACEHOLDER_REGEX = /\$LIGHTSWITCH_DIR/g;
+const NIGHTCALL_DIR_PLACEHOLDER_REGEX = /\$NIGHTCALL_DIR/g;
 const AGENT_ID_PLACEHOLDER_REGEX = /\$AGENT_ID/g;
 const MINUTES_PLACEHOLDER_REGEX = /\$MINUTES/g;
 const HOURS_PLACEHOLDER_REGEX = /\$HOURS/g;
@@ -19,7 +19,7 @@ const INITIAL_APP_STATE = {
   sunrise: undefined,
   sunset: undefined,
   locationSetManually: false,
-  isLightswitchPaused: false,
+  isNightcallPaused: false,
   theme: "day"
 };
 
@@ -27,11 +27,11 @@ module.exports = {
   RETRY_TIMEOUT,
   NIGHT,
   DAY,
-  LIGHTSWITCH_APP_STATE_KEY,
+  NIGHTCALL_APP_STATE_KEY,
   BASE_AGENT_ID,
   AUX_AGENT_ID,
   AGENT_REGEX,
-  LIGHTSWITCH_DIR_PLACEHOLDER_REGEX,
+  NIGHTCALL_DIR_PLACEHOLDER_REGEX,
   AGENT_ID_PLACEHOLDER_REGEX,
   MINUTES_PLACEHOLDER_REGEX,
   HOURS_PLACEHOLDER_REGEX,

@@ -7,7 +7,7 @@ const findLocationOfWifiTowers = towers => {
   return new Promise((resolve, reject) => {
     axios
       .post(
-        "https://qw6c0mxwz9.execute-api.eu-west-1.amazonaws.com/default/lightswitch",
+        "https://qw6c0mxwz9.execute-api.eu-west-1.amazonaws.com/default/nightcall",
         JSON.stringify({
           wifiAccessPoints: towers
         }),

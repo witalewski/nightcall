@@ -3,7 +3,7 @@
 const nodePersist = require("node-persist");
 const {
   INITIAL_APP_STATE,
-  LIGHTSWITCH_APP_STATE_KEY
+  NIGHTCALL_APP_STATE_KEY
 } = require("../util/constants");
 
 const cache = nodePersist.create({ dir: "cache" });
@@ -28,7 +28,7 @@ const setItem = async (...args) => {
 
 const getAppState = async () => {
   await initializeCacheIfEmpty();
-  const appState = await cache.getItem(LIGHTSWITCH_APP_STATE_KEY);
+  const appState = await cache.getItem(NIGHTCALL_APP_STATE_KEY);
   if (appState) {
     return appState;
   }
@@ -37,9 +37,9 @@ const getAppState = async () => {
 
 const setAppState = async updatedState => {
   await initializeCacheIfEmpty();
-  const appState = await cache.getItem(LIGHTSWITCH_APP_STATE_KEY);
-  cache.removeItem(LIGHTSWITCH_APP_STATE_KEY);
-  return cache.setItem(LIGHTSWITCH_APP_STATE_KEY, {
+  const appState = await cache.getItem(NIGHTCALL_APP_STATE_KEY);
+  cache.removeItem(NIGHTCALL_APP_STATE_KEY);
+  return cache.setItem(NIGHTCALL_APP_STATE_KEY, {
     ...appState,
     ...updatedState
   });

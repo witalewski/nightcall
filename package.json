@@ -1,5 +1,5 @@
 {
-  "name": "lightswitch",
+  "name": "nightcall",
   "version": "0.1.0",
   "description": "Automatically toggle between Light and Dark system themes based on sunrise and sunset",
   "main": "src/index.js",
@@ -8,6 +8,8 @@
   "private": false,
   "dependencies": {
     "axios": "0.18.0",
+    "global": "^4.3.2",
+    "nightcall": "/Users/krzysztofwitalewski/training/nightcall",
     "mkdirp": "0.5.1",
     "node-persist": "3.0.1",
     "node-wifiscanner": "0.2.1",
@@ -18,14 +20,14 @@
     "winston": "3.1.0"
   },
   "scripts": {
-    "install": "node src/index.js start",
+    "setup": "node src/index.js start",
     "start": "node src/index.js start",
     "stop": "node src/index.js stop",
     "test": "jest",
     "uninstall": "node src/index.js uninstall"
   },
   "bin": {
-    "lightswitch": "./src/index.js"
+    "nightcall": "./src/index.js"
   },
   "preferGlobal": true,
   "devDependencies": {

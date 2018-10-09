@@ -3,7 +3,7 @@
 const {
   BASE_AGENT_ID,
   AUX_AGENT_ID,
-  LIGHTSWITCH_DIR_PLACEHOLDER_REGEX,
+  NIGHTCALL_DIR_PLACEHOLDER_REGEX,
   AGENT_ID_PLACEHOLDER_REGEX,
   MINUTES_PLACEHOLDER_REGEX,
   HOURS_PLACEHOLDER_REGEX
@@ -38,7 +38,7 @@ const scheduleUpdate = async date => {
         this.writeLaunchAgentFile(
           targetAgentId,
           contents
-            .replace(LIGHTSWITCH_DIR_PLACEHOLDER_REGEX, process.cwd())
+            .replace(NIGHTCALL_DIR_PLACEHOLDER_REGEX, process.cwd())
             .replace(AGENT_ID_PLACEHOLDER_REGEX, targetAgentId)
             .replace(MINUTES_PLACEHOLDER_REGEX, minutes)
             .replace(HOURS_PLACEHOLDER_REGEX, hours)

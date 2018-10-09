@@ -5,7 +5,7 @@ const suncalc = require("suncalc");
 const { NIGHT, DAY, RETRY_TIMEOUT } = require("../util/constants");
 
 const performUpdate = async () => {
-  this.showDialog("Lightswitch update");
+  this.showDialog("Nightcall update");
   const updateTimer = Date.now();
   this.logger.info("Updating data...");
 
@@ -54,8 +54,6 @@ const performUpdate = async () => {
     this.logger.info(`Unable to find location. Next retry: ${nextUpdate}`);
     this.scheduleUpdate(nextUpdate);
   }
-
-  this.scheduleUpdate(new Date(Date.now() + 60 * 1000));
 };
 
 module.exports = ({

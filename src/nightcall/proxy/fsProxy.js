@@ -22,7 +22,7 @@ const readLaunchAgentTemplate = async path => {
 };
 
 const writeLaunchAgentFile = async (agentId, contents) => {
-  this.logger.info("Writing lightswitch Launch Agent file...");
+  this.logger.info("Writing nightcall Launch Agent file...");
   return new Promise((resolve, reject) => {
     mkdirp(`${os.homedir()}/Library/LaunchAgents`, err => {
       if (err) {
@@ -34,11 +34,11 @@ const writeLaunchAgentFile = async (agentId, contents) => {
           err => {
             if (err) {
               this.logger.error(
-                "Failer writing lightswitch Launch Agent file."
+                "Failer writing nightcall Launch Agent file."
               );
               reject(err);
             } else {
-              this.logger.info("Lightswitch Launch Agent file written.");
+              this.logger.info("Nightcall Launch Agent file written.");
               resolve();
             }
           }
@@ -49,19 +49,19 @@ const writeLaunchAgentFile = async (agentId, contents) => {
 };
 
 const removeLogs = async () => {
-  this.logger.info("Removing Lightswitch logs...");
+  this.logger.info("Removing Nightcall logs...");
   return new Promise((resolve, reject) => {
-    fs.access(`lightswitch.log`, fs.constants.F_OK, err => {
+    fs.access(`nightcall.log`, fs.constants.F_OK, err => {
       if (err) {
         this.logger.info("No log file was present.");
         resolve();
       } else {
-        fs.unlink(`lightswitch.log`, err => {
+        fs.unlink(`nightcall.log`, err => {
           if (err) {
-            this.logger.info("Failed to remove Lightswitch logs file.");
+            this.logger.info("Failed to remove Nightcall logs file.");
             reject();
           } else {
-            this.logger.info("Removed Lightswitch logs file.");
+            this.logger.info("Removed Nightcall logs file.");
             resolve();
           }
         });
@@ -71,7 +71,7 @@ const removeLogs = async () => {
 };
 
 const removeCache = async () => {
-  this.logger.info("Removing Lightswitch cache directory...");
+  this.logger.info("Removing Nightcall cache directory...");
   return new Promise((resolve, reject) => {
     fs.access(`cache`, fs.constants.F_OK, err => {
       if (err) {
@@ -79,7 +79,7 @@ const removeCache = async () => {
         resolve();
       } else {
         rimraf("cache", () => {
-          this.logger.info("Successfully removed Lightswitch cache directory.");
+          this.logger.info("Successfully removed Nightcall cache directory.");
           resolve();
         });
       }
@@ -88,10 +88,10 @@ const removeCache = async () => {
 };
 
 const removeLaunchAgentFile = () => {
-  this.logger.info("Removing Lightswitch Launch Agent file...");
+  this.logger.info("Removing Nightcall Launch Agent file...");
   return new Promise((resolve, reject) => {
     fs.access(
-      `${os.homedir()}/Library/LaunchAgents/tech.witalewski.lightswitch.plist`,
+      `${os.homedir()}/Library/LaunchAgents/tech.witalewski.nightcall.plist`,
       fs.constants.F_OK,
       err => {
         if (err) {
@@ -99,13 +99,13 @@ const removeLaunchAgentFile = () => {
           resolve();
         } else {
           fs.unlink(
-            `${os.homedir()}/Library/LaunchAgents/tech.witalewski.lightswitch.plist`,
+            `${os.homedir()}/Library/LaunchAgents/tech.witalewski.nightcall.plist`,
             err => {
               if (err) {
-                this.logger.error("Failed to remove Lightswitch Launch Agent file.");
+                this.logger.error("Failed to remove Nightcall Launch Agent file.");
                 reject();
               }
-              this.logger.info("Removed Lightswitch Launch Agent file.");
+              this.logger.info("Removed Nightcall Launch Agent file.");
               resolve();
             }
           );
