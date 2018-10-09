@@ -76,9 +76,18 @@ const showDialog = async msg => {
 };
 
 const setOSDarkMode = value => {
-  exec(
-    `osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to ${value}'`
-  );
+  return new Promise((resolve, reject) => {
+    exec(
+      `osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to ${value}'`,
+      {},
+      (error, stdout, stderr) => {
+        if (error || stderr) {
+          reject();
+        }
+        resolve();
+      }
+    );
+  });
 };
 
 module.exports = ({ logger }) => {

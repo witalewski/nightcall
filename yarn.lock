@@ -2746,6 +2746,11 @@ nise@^1.4.5:
     path-to-regexp "^1.7.0"
     text-encoding "^0.6.4"
 
+nock-exec@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/nock-exec/-/nock-exec-0.1.0.tgz#1d881e254795d45bb4ab375943db0e77dd9aaacb"
+  integrity sha1-HYgeJUeV1Fu0qzdZQ9sOd92aqss=
+
 node-int64@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/node-int64/-/node-int64-0.4.0.tgz#87a9065cdb355d3182d8f94ce11188b825c68a3b"
