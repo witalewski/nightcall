@@ -3,7 +3,7 @@ const RETRY_TIMEOUT = 60 * 60 * 1000;
 const NIGHT = "night";
 const DAY = "day";
 
-const STORAGE_APP_STATE_KEY = "app-state-";
+const STORAGE_APP_STATE_KEY = "app-state";
 const STORAGE_LOCATION_PREFIX = "location-";
 
 const BASE_AGENT_ID = "local.nightcall.base";
