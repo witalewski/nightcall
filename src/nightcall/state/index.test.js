@@ -1,54 +1,34 @@
-const nodePersist = require("node-persist");
-const sinon = require("sinon");
-
-const { INITIAL_APP_STATE } = require("../util/constants");
-
 describe("state", () => {
-  let create, state;
+  let state, store, localStorage;
 
-  beforeAll(() => {
-    create = sinon.stub(nodePersist, "create").callsFake(({ dir }) => {
-      return {
-        init: async () => {
-          this.mockStore = {};
-        },
-        setItem: async (key, value) => new Promise(resolve => resolve(this.mockStore[key] = value)),
-        getItem: async key => new Promise(resolve => resolve(this.mockStore[key])),
-        removeItem: async key => new Promise(resolve => resolve(this.mockStore[key] = undefined))
-      };
-    });
+  beforeEach(() => {
+    store = {};
+    localStorage = {
+      getItem: key => store[key],
+      setItem: (key, value) => (store[key] = value)
+    };
 
-    state = require("./index");
+    state = require("./index")(localStorage);
   });
 
-  test("returns initial app state if none defined", done => {
-    state.getAppState().then(appState => {
-      expect(appState).toEqual(INITIAL_APP_STATE);
-      done();
-    });
+  test("returns initial app state if none defined", () => {
+    const appState = state.getAppState();
+    expect(appState).toEqual({});
   });
 
-  test("stores and reads app state", done => {
-    state.setAppState({ isNightcallPaused: true }).then(() => {
-      state.getAppState().then(appState => {
-        expect(appState).toEqual({
-          ...INITIAL_APP_STATE,
-          isNightcallPaused: true
-        });
-        done();
-      });
+  test("stores and reads app state", () => {
+    state.setAppState({ isNightcallPaused: true });
+    const appState = state.getAppState();
+    expect(appState).toEqual({
+      isNightcallPaused: true
     });
   });
 
-  test("sets and reads arbitrary item", done => {
-    state.setItem("foo","bar").then(() => {
-      state.getItem("foo").then(foo => {
-        expect(foo).toEqual("bar");
-        done();
-      })
-    })
+  test("sets and reads location data", () => {
+    state.setLocationData("foo", { foo: "bar" });
+    const locationData = state.getLocationData("foo");
+    expect(locationData).toEqual({ foo: "bar" });
   });
-
 
   afterAll(() => {
     create.restore();

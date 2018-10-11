@@ -3,7 +3,8 @@ const RETRY_TIMEOUT = 60 * 60 * 1000;
 const NIGHT = "night";
 const DAY = "day";
 
-const NIGHTCALL_APP_STATE_KEY = "nightcallAppState";
+const STORAGE_APP_STATE_KEY = "app-state-";
+const STORAGE_LOCATION_PREFIX = "location-";
 
 const BASE_AGENT_ID = "local.nightcall.base";
 const AUX_AGENT_ID = "local.nightcall.aux";
@@ -14,20 +15,13 @@ const AGENT_ID_PLACEHOLDER_REGEX = /\$AGENT_ID/g;
 const MINUTES_PLACEHOLDER_REGEX = /\$MINUTES/g;
 const HOURS_PLACEHOLDER_REGEX = /\$HOURS/g;
 
-const INITIAL_APP_STATE = {
-  location: undefined,
-  sunrise: undefined,
-  sunset: undefined,
-  locationSetManually: false,
-  isNightcallPaused: false,
-  theme: "day"
-};
 
 module.exports = {
   RETRY_TIMEOUT,
   NIGHT,
   DAY,
-  NIGHTCALL_APP_STATE_KEY,
+  STORAGE_APP_STATE_KEY,
+  STORAGE_LOCATION_PREFIX,
   BASE_AGENT_ID,
   AUX_AGENT_ID,
   AGENT_REGEX,
@@ -35,5 +29,4 @@ module.exports = {
   AGENT_ID_PLACEHOLDER_REGEX,
   MINUTES_PLACEHOLDER_REGEX,
   HOURS_PLACEHOLDER_REGEX,
-  INITIAL_APP_STATE
 };

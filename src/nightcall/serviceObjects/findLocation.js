@@ -19,7 +19,7 @@ const findLocation = async () => {
     this.logger.error(err);
   }
 
-  location = await getLocationFromCache(ip, towers);
+  location = getLocationFromCache(ip, towers);
 
   if (!location && towers.length) {
     try {
@@ -64,10 +64,10 @@ const getEnvironmentHash = (ip, towers) => {
     .digest("base64");
 };
 
-const getLocationFromCache = async (ip, towers) => {
+const getLocationFromCache = (ip, towers) => {
   const environmentHash = getEnvironmentHash(ip, towers);
   this.logger.debug(`Looking for ${environmentHash} in location cache...`);
-  let location = await this.state.getItem(environmentHash);
+  let location = this.state.getLocationData(environmentHash);
 
   if (location) {
     this.logger.debug(`Location found in cache: ${JSON.stringify(location)}`);
@@ -76,9 +76,9 @@ const getLocationFromCache = async (ip, towers) => {
   return location ? { ...location, foundInCache: true } : undefined;
 };
 
-const storeLocationInCache = async (ip, towers, location) => {
+const storeLocationInCache = (ip, towers, location) => {
   const environmentHash = getEnvironmentHash(ip, towers);
-  await this.state.setItem(environmentHash, location);
+  this.state.setLocationData(environmentHash, location);
   this.logger.debug(`Location stored in cache: ${environmentHash}`);
 };
 

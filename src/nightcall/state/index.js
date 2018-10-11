@@ -1,45 +1,31 @@
 "use strict";
 
-const nodePersist = require("node-persist");
 const {
-  INITIAL_APP_STATE,
-  NIGHTCALL_APP_STATE_KEY
+  STORAGE_APP_STATE_KEY,
+  STORAGE_LOCATION_PREFIX
 } = require("../util/constants");
 
-const cache = nodePersist.create({ dir: "cache" });
-let cacheInitialized = false;
-
-const initializeCacheIfEmpty = async () => {
-  if (!cacheInitialized) {
-    await cache.init();
-    cacheInitialized = true;
-  }
+const getLocationData = hash => {
+  const storedValue = this.localStorage.getItem(`${STORAGE_LOCATION_PREFIX}${hash}`);
+  return storedValue ? JSON.parse(storedValue) : undefined;
 };
 
-const getItem = async (...args) => {
-  await initializeCacheIfEmpty();
-  return cache.getItem(...args);
-};
-
-const setItem = async (...args) => {
-  await initializeCacheIfEmpty();
-  return cache.setItem(...args);
-};
-
-const getAppState = async () => {
-  await initializeCacheIfEmpty();
-  const appState = await cache.getItem(NIGHTCALL_APP_STATE_KEY);
-  return new Promise(resolve =>
-    resolve(appState !== undefined ? JSON.parse(appState) : INITIAL_APP_STATE)
+const setLocationData = (hash, value) => {
+  this.localStorage.setItem(
+    `${STORAGE_LOCATION_PREFIX}${hash}`,
+    JSON.stringify(value)
   );
 };
 
-const setAppState = async updatedState => {
-  await initializeCacheIfEmpty();
-  const appState = await getAppState();
-  await cache.removeItem(NIGHTCALL_APP_STATE_KEY);
-  return cache.setItem(
-    NIGHTCALL_APP_STATE_KEY,
+const getAppState = () => {
+  const storedValue = this.localStorage.getItem(STORAGE_APP_STATE_KEY);
+  return storedValue ? JSON.parse(storedValue) : {};
+};
+
+const setAppState = updatedState => {
+  const appState = getAppState();
+  this.localStorage.setItem(
+    STORAGE_APP_STATE_KEY,
     JSON.stringify({
       ...appState,
       ...updatedState
@@ -47,4 +33,7 @@ const setAppState = async updatedState => {
   );
 };
 
-module.exports = { getItem, setItem, getAppState, setAppState };
+module.exports = localStorage => {
+  this.localStorage = localStorage;
+  return { getLocationData, setLocationData, getAppState, setAppState };
+};

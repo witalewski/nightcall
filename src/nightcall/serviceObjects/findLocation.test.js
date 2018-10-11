@@ -15,12 +15,12 @@ const getWifiTowers = jest.fn(async () => TOWERS);
 const findLocationOfIP = jest.fn(async () => LOC_1);
 const findLocationOfWifiTowers = jest.fn(async () => LOC_2);
 const emptyState = {
-  getItem: jest.fn(async key => undefined),
-  setItem: jest.fn(async (key, value) => undefined)
+  getLocationData: jest.fn(key => undefined),
+  setLocationData: jest.fn((key, value) => undefined)
 };
 const state = {
-  getItem: jest.fn(async key => LOC_2),
-  setItem: jest.fn(async (key, value) => undefined)
+  getLocationData: jest.fn(key => LOC_2),
+  setLocationData: jest.fn((key, value) => undefined)
 };
 
 describe("findLocation", () => {

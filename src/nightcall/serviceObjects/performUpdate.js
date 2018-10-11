@@ -24,12 +24,12 @@ const performUpdateWithLocation = location => {
   const now = new Date();
   if (now < sunrise || now > sunset) {
     this.changeTheme(NIGHT);
-    // this.scheduleUpdate(sunrise);
+    this.scheduleUpdate(sunrise);
   } else {
     this.changeTheme(DAY);
-    // this.scheduleUpdate(sunset);
+    this.scheduleUpdate(sunset);
   }
-  this.scheduleUpdate(new Date(Date.now() + 60 * 1000));
+  // this.scheduleUpdate(new Date(Date.now() + 60 * 1000));
 
   this.logger.debug(`Update took ${Date.now() - this.updateTimer} ms`);
 };
@@ -39,21 +39,20 @@ const performUpdate = () => {
   this.updateTimer = Date.now();
   this.logger.debug("Updating data...");
 
-  this.state.getAppState().then(appState => {
-    if (appState.locationSetManually) {
-      performUpdateWithLocation(appState.location);
-    } else {
-      this.findLocation()
-        .then(location => performUpdateWithLocation(location))
-        .catch(() => {
-          const nextUpdate = new Date(Date.now() + RETRY_TIMEOUT);
-          this.logger.debug(
-            `Unable to find location. Next retry: ${nextUpdate}`
-          );
-          this.scheduleUpdate(nextUpdate);
-        });
-    }
-  });
+  const appState = this.state.getAppState();
+  if (appState.locationSetManually) {
+    performUpdateWithLocation(appState.location);
+  } else {
+    this.findLocation()
+      .then(location => performUpdateWithLocation(location))
+      .catch(() => {
+        const nextUpdate = new Date(Date.now() + RETRY_TIMEOUT);
+        this.logger.debug(
+          `Unable to find location. Next retry: ${nextUpdate}`
+        );
+        this.scheduleUpdate(nextUpdate);
+      });
+  }
 };
 
 module.exports = ({

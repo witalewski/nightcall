@@ -1,5 +1,6 @@
 const logger = require("./util/logger");
-const state = require("./state");
+const LocalStorage = require("node-localstorage").LocalStorage;
+const state = require("./state")(new LocalStorage("./cache"));
 const getIP = require("./serviceObjects/getIP")({
   publicIP: require("public-ip"),
   logger
