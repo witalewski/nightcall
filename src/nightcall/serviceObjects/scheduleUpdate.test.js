@@ -1,17 +1,29 @@
 const logger = require("../util/logger");
 jest.mock("../util/logger");
 
+const { BASE_AGENT_ID, AUX_AGENT_ID } = require("../util/constants");
+
 const mockLaunchAgentFileTemplate =
   "Nightcall dir: $NIGHTCALL_DIR, Minutes: $MINUTES, Hours: $HOURS";
 const mockState = {
   setAppState: jest.fn()
 }
-const mockOsProxy = {
+const mockOsProxyBase = {
   loadLaunchAgent: jest.fn(() => new Promise((resolve, reject) => resolve())),
   getLoadedLaunchAgents: jest.fn(
     () => new Promise((resolve, reject) => resolve([
-      {id: 1},
-      {id: 2}
+      {id: BASE_AGENT_ID, isRunning: true},
+      {id: AUX_AGENT_ID}
+    ]))
+  ),
+  removeLaunchAgent: jest.fn(() => new Promise((resolve, reject) => resolve()))
+};
+const mockOsProxyAux = {
+  loadLaunchAgent: jest.fn(() => new Promise((resolve, reject) => resolve())),
+  getLoadedLaunchAgents: jest.fn(
+    () => new Promise((resolve, reject) => resolve([
+      {id: BASE_AGENT_ID},
+      {id: AUX_AGENT_ID, isRunning: true}
     ]))
   ),
   removeLaunchAgent: jest.fn(() => new Promise((resolve, reject) => resolve()))
@@ -34,28 +46,47 @@ describe("scheduleUpdate", () => {
   beforeAll(() => {
     params = {
       state: mockState,
-      osProxy: mockOsProxy,
+      osProxy: mockOsProxyBase,
       fsProxy: mockFsProxy,
       logger
     };
   });
 
-  test("schedules to update at provided time", done => {
+  test("schedules to update at provided time - as base agent", done => {
     const now = new Date();
     const expectedResult = `Nightcall dir: ${process.cwd()}, Minutes: ${now.getMinutes() + 1}, Hours: ${now.getHours()}`;
     scheduleUpdate = require("./scheduleUpdate")(params);
 
     scheduleUpdate(now).then(() => {
-      expect(mockOsProxy.removeLaunchAgent).toHaveBeenCalledWith(1);
-      expect(mockOsProxy.removeLaunchAgent).toHaveBeenCalledWith(2);
-      expect(mockFsProxy.removeLaunchAgentFile).toHaveBeenCalledWith(1);
-      expect(mockFsProxy.removeLaunchAgentFile).toHaveBeenCalledWith(2);
+      expect(mockOsProxyBase.removeLaunchAgent).toHaveBeenCalledWith(AUX_AGENT_ID);
+      expect(mockFsProxy.removeLaunchAgentFile).toHaveBeenCalledWith(AUX_AGENT_ID);
+      expect(mockFsProxy.readLaunchAgentTemplate).toHaveBeenCalled();
+      expect(mockFsProxy.writeLaunchAgentFile).toHaveBeenCalledWith(
+        "local.nightcall.aux",
+        expectedResult
+      );
+      expect(mockOsProxyBase.loadLaunchAgent).toHaveBeenCalled();
+      done();
+    });
+  });
+
+  test("schedules to update at provided time - as aux agent", done => {
+    const now = new Date();
+    const expectedResult = `Nightcall dir: ${process.cwd()}, Minutes: ${now.getMinutes() + 1}, Hours: ${now.getHours()}`;
+    scheduleUpdate = require("./scheduleUpdate")({
+      ...params,
+      osProxy: mockOsProxyAux
+    });
+
+    scheduleUpdate(now).then(() => {
+      expect(mockOsProxyAux.removeLaunchAgent).toHaveBeenCalledWith(BASE_AGENT_ID);
+      expect(mockFsProxy.removeLaunchAgentFile).toHaveBeenCalledWith(BASE_AGENT_ID);
       expect(mockFsProxy.readLaunchAgentTemplate).toHaveBeenCalled();
       expect(mockFsProxy.writeLaunchAgentFile).toHaveBeenCalledWith(
         "local.nightcall.base",
         expectedResult
       );
-      expect(mockOsProxy.loadLaunchAgent).toHaveBeenCalled();
+      expect(mockOsProxyAux.loadLaunchAgent).toHaveBeenCalled();
       done();
     });
   });
@@ -106,7 +137,7 @@ describe("scheduleUpdate", () => {
     scheduleUpdate = require("./scheduleUpdate")({
       ...params,
       osProxy: {
-        ...mockOsProxy,
+        ...mockOsProxyBase,
         loadLaunchAgent
       }
     });

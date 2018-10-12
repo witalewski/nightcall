@@ -64,13 +64,10 @@ const getLoadedLaunchAgents = async () => {
               const id = line.match(AGENT_REGEX)[0];
               return { pid, id, isRunning };
             });
-          if (agents) {
-            this.logger.debug(
-              `Nightcall launch agents loaded: ${JSON.stringify(agents)}`
-            );
-          } else {
-            this.logger.debug("No nightcall agents loaded.");
-          }
+
+          this.logger.debug(
+            `Nightcall launch agents loaded: ${JSON.stringify(agents)}`
+          );
           resolve(agents);
         } else {
           this.logger.debug("No nightcall agents loaded.");

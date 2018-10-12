@@ -33,7 +33,7 @@ const findLocation = async () => {
     try {
       location = await this.findLocationOfIP(ip);
     } catch (err) {
-      throw err;
+      this.logger.error(err);
     }
   }
 

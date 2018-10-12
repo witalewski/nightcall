@@ -47,10 +47,37 @@ describe("findLocation", () => {
       });
     });
 
+
     test("returns ip location when ip, wifi and ip location are present but wifi location isn't", done => {
       const findLocation = require("./findLocation")({
         ...params,
         findLocationOfWifiTowers: asyncFail,
+        state: emptyState
+      });
+
+      findLocation().then(location => {
+        expect(location).toEqual(LOC_1);
+        done();
+      });
+    });
+
+    test("handles error while getting IP", done => {
+      const findLocation = require("./findLocation")({
+        ...params,
+        getIP: asyncFail,
+        state: emptyState
+      });
+
+      findLocation().then(location => {
+        expect(location).toEqual(LOC_2);
+        done();
+      });
+    });
+
+    test("handles error while getting wifi towers", done => {
+      const findLocation = require("./findLocation")({
+        ...params,
+        getWifiTowers: asyncFail,
         state: emptyState
       });
 
@@ -74,6 +101,7 @@ describe("findLocation", () => {
       });
     });
   });
+  
 
   describe("with cache", () => {
     test("returns cached location", done => {
