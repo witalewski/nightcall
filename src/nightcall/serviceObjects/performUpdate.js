@@ -2,32 +2,41 @@
 
 const suncalc = require("suncalc");
 
-const { NIGHT, DAY, RETRY_TIMEOUT } = require("../util/constants");
+const { TWENTY_FOUR_HOURS, NIGHT, DAY, RETRY_TIMEOUT } = require("../util/constants");
 
 const performUpdateWithLocation = location => {
-  let { sunrise, sunset } = suncalc.getTimes(
+  this.state.setAppState({ location });
+
+  const { sunrise, sunset } = suncalc.getTimes(
     new Date(),
     location.lat,
     location.lng
   );
-
-  this.state.setAppState({
-    location,
-    sunrise,
-    sunset
-  });
+  const sunriseTomorrow = suncalc.getTimes(new Date(Date.now() + TWENTY_FOUR_HOURS), location.lat, location.lng).sunrise;
 
   this.logger.debug(`Daytime for ${location.lat},${location.lng}:`);
-  this.logger.debug(`Sunrise: ${sunrise}`);
-  this.logger.debug(`Sunset: ${sunset}`);
+  this.logger.debug(`Sunrise today: ${sunrise}`);
+  this.logger.debug(`Sunset today: ${sunset}`);
+  this.logger.debug(`Sunrise tomorrow: ${sunriseTomorrow}`);
+
+  this.logger.info(JSON.stringify({
+    location,
+    time: Date.now(),
+    sunrise: sunrise.getTime(),
+    sunset: sunset.getTime(),
+    sunriseTomorrow: sunriseTomorrow.getTime()
+  }));
 
   const now = new Date();
-  if (now < sunrise || now > sunset) {
+  if (now < sunrise) {
     this.changeTheme(NIGHT);
     this.scheduleUpdate(sunrise);
-  } else {
+  } else if (now < sunset) {
     this.changeTheme(DAY);
     this.scheduleUpdate(sunset);
+  } else {
+    this.changeTheme(NIGHT);
+    this.scheduleUpdate(sunriseTomorrow);
   }
   // this.scheduleUpdate(new Date(Date.now() + 60 * 1000));
 

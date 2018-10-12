@@ -5,12 +5,13 @@ jest.mock("../util/logger");
 
 const { DAY, NIGHT } = require("../util/constants");
 
-const mockLocation = { lat: 53.3603142, lng: -6.3150542000000005 };
-const mockDaytime = new Date(1538905712356);
-const mockBeforeSunrise = new Date(1538885521289);
-const mockAfterSunset = new Date(1538943182631);
-const mockSunset = new Date(1538934620641);
-const mockSunrise = new Date(1538894296248);
+const mockLocation = {lat:52.405774,lng:16.929156};
+const mockDaytime = new Date(1539337787432);
+const mockBeforeSunrise = new Date(1539312660919);
+const mockAfterSunset = new Date(1539370260919);
+const mockSunrise = new Date(1539321177064);
+const mockSunset = new Date(1539360419052);
+const mockSunriseTomorrow = new Date(1539407682004);
 
 const mockStateWithoutLocation = {
   getAppState: jest.fn(async () => ({
@@ -50,9 +51,9 @@ describe("performUpdate", () => {
 
   describe("with new location data", () => {
     test("changes theme to day based on new location data", done => {
-      const scheduleUpdate = jest.fn(theme => {
+      const scheduleUpdate = jest.fn(nextUpdate => {
         expect(changeTheme).toHaveBeenCalledWith(DAY);
-        expect(theme).toEqual(mockSunset);
+        expect(nextUpdate).toEqual(mockSunset);
         done();
       });
       performUpdate = require("./performUpdate")({
@@ -65,9 +66,9 @@ describe("performUpdate", () => {
     });
 
     test("changes theme to night based on new location data before sunrise", done => {
-      const scheduleUpdate = jest.fn(theme => {
+      const scheduleUpdate = jest.fn(nextUpdate => {
         expect(changeTheme).toHaveBeenCalledWith(NIGHT);
-        expect(theme).toEqual(mockSunrise);
+        expect(nextUpdate).toEqual(mockSunrise);
         done();
       });
       performUpdate = require("./performUpdate")({
@@ -80,9 +81,9 @@ describe("performUpdate", () => {
     });
 
     test("changes theme to night based on new location data after sunset", done => {
-      const scheduleUpdate = jest.fn(theme => {
+      const scheduleUpdate = jest.fn(nextUpdate => {
         expect(changeTheme).toHaveBeenCalledWith(NIGHT);
-        expect(theme).toEqual(mockSunrise);
+        expect(nextUpdate).toEqual(mockSunriseTomorrow);
         done();
       });
       performUpdate = require("./performUpdate")({
@@ -97,9 +98,9 @@ describe("performUpdate", () => {
 
   describe("with manually overriden location data", () => {
     test("changes theme to day based on new location data", done => {
-      const scheduleUpdate = jest.fn(theme => {
+      const scheduleUpdate = jest.fn(nextUpdate => {
         expect(changeTheme).toHaveBeenCalledWith(DAY);
-        expect(theme).toEqual(mockSunset);
+        expect(nextUpdate).toEqual(mockSunset);
         done();
       });
       performUpdate = require("./performUpdate")({
@@ -113,9 +114,9 @@ describe("performUpdate", () => {
     });
 
     test("changes theme to night based on new location data before sunrise", done => {
-      const scheduleUpdate = jest.fn(theme => {
+      const scheduleUpdate = jest.fn(nextUpdate => {
         expect(changeTheme).toHaveBeenCalledWith(NIGHT);
-        expect(theme).toEqual(mockSunrise);
+        expect(nextUpdate).toEqual(mockSunrise);
         done();
       });
       performUpdate = require("./performUpdate")({
@@ -129,9 +130,9 @@ describe("performUpdate", () => {
     });
 
     test("changes theme to night based on new location data after sunset", done => {
-      const scheduleUpdate = jest.fn(theme => {
+      const scheduleUpdate = jest.fn(nextUpdate => {
         expect(changeTheme).toHaveBeenCalledWith(NIGHT);
-        expect(theme).toEqual(mockSunrise);
+        expect(nextUpdate).toEqual(mockSunriseTomorrow);
         done();
       });
       performUpdate = require("./performUpdate")({

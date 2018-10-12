@@ -3,6 +3,9 @@ jest.mock("../util/logger");
 
 const mockLaunchAgentFileTemplate =
   "Nightcall dir: $NIGHTCALL_DIR, Minutes: $MINUTES, Hours: $HOURS";
+const mockState = {
+  setAppState: jest.fn()
+}
 const mockOsProxy = {
   loadLaunchAgent: jest.fn(() => new Promise((resolve, reject) => resolve())),
   getLoadedLaunchAgents: jest.fn(
@@ -30,6 +33,7 @@ describe("scheduleUpdate", () => {
 
   beforeAll(() => {
     params = {
+      state: mockState,
       osProxy: mockOsProxy,
       fsProxy: mockFsProxy,
       logger
@@ -38,7 +42,7 @@ describe("scheduleUpdate", () => {
 
   test("schedules to update at provided time", done => {
     const now = new Date();
-    const expectedResult = `Nightcall dir: ${process.cwd()}, Minutes: ${now.getMinutes()}, Hours: ${now.getHours()}`;
+    const expectedResult = `Nightcall dir: ${process.cwd()}, Minutes: ${now.getMinutes() + 1}, Hours: ${now.getHours()}`;
     scheduleUpdate = require("./scheduleUpdate")(params);
 
     scheduleUpdate(now).then(() => {

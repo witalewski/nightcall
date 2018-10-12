@@ -1,4 +1,5 @@
 const RETRY_TIMEOUT = 60 * 60 * 1000;
+const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
 
 const NIGHT = "night";
 const DAY = "day";
@@ -18,6 +19,7 @@ const HOURS_PLACEHOLDER_REGEX = /\$HOURS/g;
 
 module.exports = {
   RETRY_TIMEOUT,
+  TWENTY_FOUR_HOURS,
   NIGHT,
   DAY,
   STORAGE_APP_STATE_KEY,

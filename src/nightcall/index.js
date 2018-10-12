@@ -33,6 +33,7 @@ const changeTheme = require("./serviceObjects/changeTheme")({
   logger
 });
 const scheduleUpdate = require("./serviceObjects/scheduleUpdate")({
+  state,
   osProxy,
   fsProxy,
   logger

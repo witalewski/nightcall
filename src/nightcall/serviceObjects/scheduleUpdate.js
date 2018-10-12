@@ -19,10 +19,12 @@ const removeLaunchAgents = async agents => {
 };
 
 const scheduleUpdate = async date => {
-  const minutes = date.getMinutes();
-  const hours = date.getHours();
+  const fixedDate = new Date((date.getTime() + 60 * 1000));
+  const minutes = fixedDate.getMinutes();
+  const hours = fixedDate.getHours();
 
-  this.logger.debug(`Scheduling next update to ${date}`);
+  this.state.setAppState({nextUpdate: fixedDate});
+  this.logger.debug(`Scheduling next update to ${fixedDate}`);
   this.logger.debug(`Current pid: ${process.pid}`);
 
   const loadedLaunchAgents = await this.getLoadedLaunchAgents(BASE_AGENT_ID);
@@ -47,9 +49,12 @@ const scheduleUpdate = async date => {
   );
 
   await this.loadLaunchAgent(targetAgentId);
+
+  this.logger.debug(`Update scheduled.`);
 };
 
-module.exports = ({ osProxy, fsProxy, logger }) => {
+module.exports = ({ state, osProxy, fsProxy, logger }) => {
+  this.state = state;
   this.loadLaunchAgent = osProxy.loadLaunchAgent;
   this.getLoadedLaunchAgents = osProxy.getLoadedLaunchAgents;
   this.removeLaunchAgent = osProxy.removeLaunchAgent;

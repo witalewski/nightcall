@@ -20,11 +20,11 @@
     "winston": "3.1.0"
   },
   "scripts": {
-    "setup": "node src/index.js start",
+    "postinstall": "npm start",
     "start": "node src/index.js start",
     "stop": "node src/index.js stop",
     "test": "jest",
-    "uninstall": "node src/index.js uninstall"
+    "preuninstall": "node src/index.js uninstall"
   },
   "bin": {
     "nightcall": "./src/index.js"
