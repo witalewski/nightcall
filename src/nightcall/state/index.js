@@ -6,8 +6,10 @@ const {
 } = require("../util/constants");
 
 const getLocationData = hash => {
-  const storedValue = this.localStorage.getItem(`${STORAGE_LOCATION_PREFIX}${hash}`);
-  return storedValue ? JSON.parse(storedValue) : undefined;
+  const storedValue = this.localStorage.getItem(
+    `${STORAGE_LOCATION_PREFIX}${hash}`
+  );
+  return storedValue !== undefined ? JSON.parse(storedValue) : undefined;
 };
 
 const setLocationData = (hash, value) => {
