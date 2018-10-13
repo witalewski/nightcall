@@ -22,7 +22,7 @@
     "postinstall": "npm start",
     "start": "node src/index.js start",
     "stop": "node src/index.js stop",
-    "test": "jest",
+    "test": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "preuninstall": "node src/index.js uninstall"
   },
   "bin": {
@@ -30,6 +30,7 @@
   },
   "preferGlobal": true,
   "devDependencies": {
+    "coveralls": "^3.0.2",
     "jest": "^23.6.0",
     "sinon": "^6.3.5"
   }
