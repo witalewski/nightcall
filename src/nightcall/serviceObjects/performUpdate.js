@@ -38,7 +38,6 @@ const performUpdateWithLocation = location => {
     this.changeTheme(NIGHT);
     this.scheduleUpdate(sunriseTomorrow);
   }
-  // this.scheduleUpdate(new Date(Date.now() + 60 * 1000));
 
   this.logger.debug(`Update took ${Date.now() - this.updateTimer} ms`);
 };

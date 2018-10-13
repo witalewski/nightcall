@@ -30,6 +30,11 @@ describe("state", () => {
     expect(locationData).toEqual({ foo: "bar" });
   });
 
+  test("returns empty location data when none stored", () => {
+    const locationData = state.getLocationData("bar");
+    expect(locationData).toEqual(undefined);
+  });
+
   afterAll(() => {
     create.restore();
   });
