@@ -2,4 +2,4 @@
 
 "use strict";
 
-require("./nightcall").performUpdate();
+require("../src").performUpdate();

@@ -1,5 +1,5 @@
 "use strict";
 
-const { DAY } = require("./nightcall/util/constants");
+const { DAY } = require("../src/nightcall/util/constants");
 
-require("./nightcall").changeTheme(DAY);
+require("../src").changeTheme(DAY);

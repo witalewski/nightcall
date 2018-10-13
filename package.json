@@ -19,9 +19,8 @@
     "winston": "3.1.0"
   },
   "scripts": {
-    "postinstall": "npm start",
-    "start": "node src/index.js start",
-    "stop": "node src/index.js stop",
+    "postinstall": "yarn start",
+    "start": "node bin/index.js start",
     "test": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "preuninstall": "node src/index.js uninstall"
   },
