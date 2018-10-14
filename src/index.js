@@ -1,7 +1,6 @@
 const logger = require("./util/logger");
 const LocalStorage = require("node-localstorage").LocalStorage;
 const state = require("./state")(new LocalStorage("./cache"));
-const removeAllAgentsAndFiles = require("./serviceObjects/removeAllAgentsAndFiles")({ logger });
 const getIP = require("./serviceObjects/getIP")({
   publicIP: require("public-ip"),
   logger
@@ -28,6 +27,9 @@ const findLocation = require("./serviceObjects/findLocation")({
 });
 const osProxy = require("./proxy/osProxy")({ logger });
 const fsProxy = require("./proxy/fsProxy")({ logger });
+const removeAllAgentsAndFiles = require("./serviceObjects/removeAllAgentsAndFiles")(
+  { osProxy, fsProxy, logger }
+);
 const changeTheme = require("./serviceObjects/changeTheme")({
   osProxy,
   state,

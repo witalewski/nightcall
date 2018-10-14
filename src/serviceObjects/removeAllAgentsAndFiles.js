@@ -1,29 +1,25 @@
-const removeAllAgentsAndFiles = () => new Promise((resolve, reject) => {
-  const {
-    removeLaunchAgent,
-    getLoadedLaunchAgents
-  } = require("../src/nightcall/proxy/osProxy")({ logger: this.logger });
-  const {
-    removeLogs,
-    removeCache,
-    removeLaunchAgentFile
-  } = require("../src/nightcall/proxy/fsProxy")({ logger: this.logger });
-
-  getLoadedLaunchAgents().then(loadedLaunchAgents => {
-    const cleanUpPromises = [];
-    loadedLaunchAgents.filter(e => !e.isRunning).forEach(({ id }) => {
-      cleanUpPromises.push(removeLaunchAgent(id));
-      cleanUpPromises.push(removeLaunchAgentFile(id));
-    });
-    Promise.all(cleanUpPromises).then(() => {
-      removeLogs();
-      removeCache();
-      resolve();
+const removeAllAgentsAndFiles = () =>
+  new Promise((resolve, reject) => {
+    this.getLoadedLaunchAgents().then(loadedLaunchAgents => {
+      const cleanUpPromises = [];
+      loadedLaunchAgents.filter(e => !e.isRunning).forEach(({ id }) => {
+        cleanUpPromises.push(this.removeLaunchAgent(id));
+        cleanUpPromises.push(this.removeLaunchAgentFile(id));
+      });
+      Promise.all(cleanUpPromises).then(() => {
+        this.removeLogs();
+        this.removeCache();
+        resolve();
+      });
     });
   });
-});
 
-module.exports = logger => {
-    this.logger = logger;
-    return removeAllAgentsAndFiles;
+module.exports = ({ osProxy, fsProxy, logger }) => {
+  this.getLoadedLaunchAgents = osProxy.getLoadedLaunchAgents;
+  this.removeLaunchAgent = osProxy.removeLaunchAgent;
+  this.removeLaunchAgentFile = fsProxy.removeLaunchAgentFile;
+  this.removeLogs = fsProxy.removeLogs;
+  this.removeCache = fsProxy.removeCache;
+  this.logger = logger;
+  return removeAllAgentsAndFiles;
 };
