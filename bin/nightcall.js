@@ -19,6 +19,8 @@ const uninstall = () => {
   require("../src").removeAllAgentsAndFiles();
 };
 
+const defaultFunc = () => {};
+
 const args = process.argv.splice(process.execArgv.length + 2);
 
 switch (args[0]) {
@@ -35,6 +37,6 @@ switch (args[0]) {
     uninstall();
     break;
   default:
-    require("./default");
+    defaultFunc();
     break;
 }
