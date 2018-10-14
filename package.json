@@ -20,12 +20,12 @@
   },
   "scripts": {
     "postinstall": "yarn start",
-    "start": "node bin/index.js start",
+    "start": "node bin/nightcall.js start",
     "test": "jest --coverage --coverageReporters=text-lcov | coveralls",
-    "preuninstall": "node src/index.js uninstall"
+    "preuninstall": "node bin/nightcall.js uninstall"
   },
   "bin": {
-    "nightcall": "./src/index.js"
+    "nightcall": "./bin/nightcall.js"
   },
   "preferGlobal": true,
   "devDependencies": {
