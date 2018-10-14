@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 "use strict";
 
-const uninstall = () => {
-  require("../src").removeAllAgentsAndFiles();
+const start = () => {
+  require("../src").performUpdate();
 };
 
 const day = () => {
@@ -15,11 +15,15 @@ const night = () => {
   require("../src").changeTheme(NIGHT);
 };
 
+const uninstall = () => {
+  require("../src").removeAllAgentsAndFiles();
+};
+
 const args = process.argv.splice(process.execArgv.length + 2);
 
 switch (args[0]) {
-  case "uninstall":
-    uninstall();
+  case "start":
+    start();
     break;
   case "day":
     day();
@@ -27,8 +31,8 @@ switch (args[0]) {
   case "night":
     night();
     break;
-  case "start":
-    require("../src").performUpdate();
+  case "uninstall":
+    uninstall();
     break;
   default:
     require("./default");
