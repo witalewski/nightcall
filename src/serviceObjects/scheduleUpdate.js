@@ -7,7 +7,8 @@ const {
   AGENT_ID_PLACEHOLDER_REGEX,
   MINUTES_PLACEHOLDER_REGEX,
   HOURS_PLACEHOLDER_REGEX,
-  RUN_AT_LOAD_REGEX
+  RUN_AT_LOAD_REGEX,
+  CALENDAR_INTERVAL_REGEX
 } = require("../util/constants");
 
 const removeLaunchAgents = async agents => {
@@ -48,6 +49,7 @@ const scheduleUpdate = async date => {
       .replace(MINUTES_PLACEHOLDER_REGEX, minutes)
       .replace(HOURS_PLACEHOLDER_REGEX, hours)
       .replace(RUN_AT_LOAD_REGEX, false)
+      .replace(CALENDAR_INTERVAL_REGEX, '')
   );
 
   await this.loadLaunchAgent(targetAgentId);

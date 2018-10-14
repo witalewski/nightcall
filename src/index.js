@@ -1,6 +1,7 @@
 const logger = require("./util/logger");
 const LocalStorage = require("node-localstorage").LocalStorage;
 const state = require("./state")(new LocalStorage("./cache"));
+const removeAllAgentsAndFiles = require("./serviceObjects/removeAllAgentsAndFiles")({ logger });
 const getIP = require("./serviceObjects/getIP")({
   publicIP: require("public-ip"),
   logger
@@ -47,4 +48,4 @@ const performUpdate = require("./serviceObjects/performUpdate")({
   logger
 });
 
-module.exports = { performUpdate, changeTheme };
+module.exports = { performUpdate, changeTheme, removeAllAgentsAndFiles };

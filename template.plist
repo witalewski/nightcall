@@ -20,6 +20,7 @@
         <key>KeepAlive</key>
         <false/>
 
+        $CALENDAR_INTERVAL
         <key>StartCalendarInterval</key>
         <dict>
             <key>Minute</key>
@@ -27,6 +28,7 @@
             <key>Hour</key>
             <integer>$HOURS</integer>
         </dict>
+        $CALENDAR_INTERVAL
 
     </dict>
 </plist>

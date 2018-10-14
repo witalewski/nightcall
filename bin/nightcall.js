@@ -2,28 +2,7 @@
 "use strict";
 
 const uninstall = () => {
-  const logger = require("../src/nightcall/util/logger");
-  const {
-    removeLaunchAgent,
-    getLoadedLaunchAgents
-  } = require("../src/nightcall/proxy/osProxy")({ logger });
-  const {
-    removeLogs,
-    removeCache,
-    removeLaunchAgentFile
-  } = require("../src/nightcall/proxy/fsProxy")({ logger });
-
-  getLoadedLaunchAgents().then(loadedLaunchAgents => {
-    const cleanUpPromises = [];
-    loadedLaunchAgents.filter(e => !e.isRunning).forEach(({ id }) => {
-      cleanUpPromises.push(removeLaunchAgent(id));
-      cleanUpPromises.push(removeLaunchAgentFile(id));
-    });
-    Promise.all(cleanUpPromises).then(() => {
-      removeLogs();
-      removeCache();
-    });
-  });
+  require("../src").removeAllAgentsAndFiles();
 };
 
 const day = () => {
