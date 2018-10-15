@@ -1,23 +1,9 @@
 #!/usr/bin/env node
 "use strict";
 
-const start = () => {
-  require("../src").performUpdate();
-};
+const nightcall = require("../src");
+const { DAY, NIGHT } = require("../src/util/constants");
 
-const day = () => {
-  const { DAY } = require("../src/nightcall/util/constants");
-  require("../src").changeTheme(DAY);
-};
-
-const night = () => {
-  const { NIGHT } = require("../src/nightcall/util/constants");
-  require("../src").changeTheme(NIGHT);
-};
-
-const uninstall = () => {
-  require("../src").removeAllAgentsAndFiles();
-};
 
 const defaultFunc = () => {};
 
@@ -25,16 +11,19 @@ const args = process.argv.splice(process.execArgv.length + 2);
 
 switch (args[0]) {
   case "start":
-    start();
+  nightcall.performUpdate();
     break;
   case "day":
-    day();
+  nightcall.changeTheme(DAY);
     break;
   case "night":
-    night();
+  nightcall.changeTheme(NIGHT);
+    break;
+  case "location":
+  nightcall.setLocation(...args.splice(1));
     break;
   case "uninstall":
-    uninstall();
+  nightcall.removeAllAgentsAndFiles();
     break;
   default:
     defaultFunc();

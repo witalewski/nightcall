@@ -49,5 +49,11 @@ const performUpdate = require("./serviceObjects/performUpdate")({
   osProxy,
   logger
 });
+const setLocation = require("./ui/setLocation")({ state, performUpdate });
 
-module.exports = { performUpdate, changeTheme, removeAllAgentsAndFiles };
+module.exports = {
+  performUpdate,
+  changeTheme,
+  removeAllAgentsAndFiles,
+  setLocation
+};

@@ -27,6 +27,10 @@
   "bin": {
     "nightcall": "./bin/nightcall.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/witalewski/nightcall.git"
+  },
   "preferGlobal": true,
   "devDependencies": {
     "coveralls": "^3.0.2",

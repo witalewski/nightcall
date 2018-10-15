@@ -4,6 +4,8 @@ const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
 const NIGHT = "night";
 const DAY = "day";
 
+const AUTO = "auto";
+
 const STORAGE_APP_STATE_KEY = "app-state";
 const STORAGE_LOCATION_PREFIX = "location-";
 
@@ -24,6 +26,7 @@ module.exports = {
   TWENTY_FOUR_HOURS,
   NIGHT,
   DAY,
+  AUTO,
   STORAGE_APP_STATE_KEY,
   STORAGE_LOCATION_PREFIX,
   BASE_AGENT_ID,
