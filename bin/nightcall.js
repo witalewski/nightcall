@@ -4,9 +4,6 @@
 const nightcall = require("../src");
 const { DAY, NIGHT } = require("../src/util/constants");
 
-
-const defaultFunc = () => {};
-
 const args = process.argv.splice(process.execArgv.length + 2);
 
 switch (args[0]) {
@@ -25,7 +22,8 @@ switch (args[0]) {
   case "uninstall":
   nightcall.removeAllAgentsAndFiles();
     break;
+  case "help":
   default:
-    defaultFunc();
+    nightcall.displayHelp();
     break;
 }

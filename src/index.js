@@ -16,7 +16,11 @@ const findLocationOfWifiTowers = require("./serviceObjects/findLocationOfWifiTow
   {
     logger
   }
-);
+)({
+  // proxied by default, change url to https://www.googleapis.com/geolocation/v1/geolocate?key=YOUR_KEY to use google apis directly
+  url: "https://qw6c0mxwz9.execute-api.eu-west-1.amazonaws.com/default/lightswitch",
+  apiKey: "S0a5WCywb68N075YgoTVK3TidPB11bus2vplyW9s"
+});
 const findLocation = require("./serviceObjects/findLocation")({
   getIP,
   getWifiTowers,
@@ -41,8 +45,14 @@ const scheduleUpdate = require("./serviceObjects/scheduleUpdate")({
   fsProxy,
   logger
 });
+const createStartupAgent = require("./serviceObjects/createStartupAgent")({
+  state,
+  fsProxy,
+  logger
+});
 const performUpdate = require("./serviceObjects/performUpdate")({
   state,
+  createStartupAgent,
   findLocation,
   changeTheme,
   scheduleUpdate,
@@ -50,10 +60,13 @@ const performUpdate = require("./serviceObjects/performUpdate")({
   logger
 });
 const setLocation = require("./ui/setLocation")({ state, performUpdate });
+const displayHelp = require("./ui/displayHelp");
 
 module.exports = {
   performUpdate,
   changeTheme,
   removeAllAgentsAndFiles,
-  setLocation
+  setLocation,
+  displayHelp,
+  createStartupAgent
 };

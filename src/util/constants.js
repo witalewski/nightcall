@@ -11,6 +11,7 @@ const STORAGE_LOCATION_PREFIX = "location-";
 
 const BASE_AGENT_ID = "local.nightcall.base";
 const AUX_AGENT_ID = "local.nightcall.aux";
+const STARTUP_AGENT_ID = "local.nightcall.startup";
 const AGENT_REGEX = /local\.nightcall\.\w+/;
 
 const NIGHTCALL_DIR_PLACEHOLDER_REGEX = /\$NIGHTCALL_DIR/g;
@@ -31,6 +32,7 @@ module.exports = {
   STORAGE_LOCATION_PREFIX,
   BASE_AGENT_ID,
   AUX_AGENT_ID,
+  STARTUP_AGENT_ID,
   AGENT_REGEX,
   NIGHTCALL_DIR_PLACEHOLDER_REGEX,
   AGENT_ID_PLACEHOLDER_REGEX,

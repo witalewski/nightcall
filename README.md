@@ -10,7 +10,7 @@ Automatically switch between light and dark system themes on sunrise and sunset.
 
 ### Prerequisites
 
-As of today, Nightcall only works with MacOS. Standalone installation will make most sense with Mojave (or newer) as this is the first version to have a proper dark OS theme.
+As of today, Nightcall only works with macOS. Standalone installation will make most sense with Mojave (or newer) as this is the first version to have a proper dark OS theme.
 
 ### Installing
 
@@ -24,7 +24,7 @@ Nightcall will be installed globally and automatic setup will follow right after
 
 ## Running the tests
 
-To run tests locally, go to module directory and execute `npm run jest`
+To run tests locally, go to the module directory and execute `npm run jest`
 
 ## Built With
 

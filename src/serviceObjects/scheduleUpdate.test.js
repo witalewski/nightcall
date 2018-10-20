@@ -33,7 +33,7 @@ const mockFsProxy = {
     () => new Promise((resolve, reject) => resolve(mockLaunchAgentFileTemplate))
   ),
   writeLaunchAgentFile: jest.fn(
-    contents => new Promise((resolve, reject) => resolve())
+    () => new Promise((resolve, reject) => resolve())
   ),
   removeLaunchAgentFile: jest.fn(
     () => new Promise((resolve, reject) => resolve())

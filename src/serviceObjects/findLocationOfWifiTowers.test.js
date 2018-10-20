@@ -15,6 +15,9 @@ describe("findLocationOfWifiTowers", () => {
   test("returns location of Wifi towers", done => {
     const findLocationOfWifiTowers = require("./findLocationOfWifiTowers")({
       logger
+    })({
+      url: "http://whatever.com",
+      apiKey: ""
     });
     axios.post.mockResolvedValue(RESPONSE);
 
@@ -27,6 +30,9 @@ describe("findLocationOfWifiTowers", () => {
   test("handles error while searching for location of Wifi towers", done => {
     const findLocationOfWifiTowers = require("./findLocationOfWifiTowers")({
       logger
+    })({
+      url: "http://whatever.com",
+      apiKey: ""
     });
     axios.post.mockResolvedValue(ERROR_RESPONSE);
 

@@ -16,14 +16,24 @@ const mockSunriseTomorrow = new Date(1539407682004);
 const mockStateWithoutLocation = {
   getAppState: jest.fn(() => ({
     location: undefined,
-    locationSetManually: false
+    locationSetManually: false,
+    startupAgentCreated: true
+  })),
+  setAppState: jest.fn()
+};
+const mockStateWithoutStartupAgent = {
+  getAppState: jest.fn(() => ({
+    location: undefined,
+    locationSetManually: false,
+    startupAgentCreated: false
   })),
   setAppState: jest.fn()
 };
 const mockStateWithManuallyOverriddenLocation = {
   getAppState: jest.fn(() => ({
     location: mockLocation,
-    locationSetManually: true
+    locationSetManually: true,
+    startupAgentCreated: true
   })),
   setAppState: jest.fn()
 };
@@ -32,12 +42,14 @@ const changeTheme = jest.fn();
 const osProxy = {
   showDialog: jest.fn()
 };
+const createStartupAgent = jest.fn();
 
 describe("performUpdate", () => {
   let clock, params, performUpdate;
 
   beforeAll(() => {
     params = {
+      createStartupAgent,
       findLocation,
       changeTheme,
       osProxy,
@@ -149,7 +161,9 @@ describe("performUpdate", () => {
   describe("with no location data", () => {
     test("schedules retry update when no location data is available", done => {
       const scheduleUpdate = jest.fn(nextUpdate => {
-        expect(nextUpdate).toEqual(new Date(mockDaytime.getTime() + RETRY_TIMEOUT));
+        expect(nextUpdate).toEqual(
+          new Date(mockDaytime.getTime() + RETRY_TIMEOUT)
+        );
         done();
       });
       performUpdate = require("./performUpdate")({
@@ -162,6 +176,17 @@ describe("performUpdate", () => {
       });
       clock = sinon.useFakeTimers(mockDaytime);
       performUpdate();
+    });
+
+    test("creates startup agent", () => {
+      const scheduleUpdate = jest.fn();
+      performUpdate = require("./performUpdate")({
+        ...params,
+        scheduleUpdate,
+        state: mockStateWithoutStartupAgent
+      });
+      performUpdate();
+      expect(createStartupAgent).toHaveBeenCalled();
     });
   });
 });

@@ -3,6 +3,7 @@
 const {
   BASE_AGENT_ID,
   AUX_AGENT_ID,
+  STARTUP_AGENT_ID,
   NIGHTCALL_DIR_PLACEHOLDER_REGEX,
   AGENT_ID_PLACEHOLDER_REGEX,
   MINUTES_PLACEHOLDER_REGEX,
@@ -30,7 +31,7 @@ const scheduleUpdate = async date => {
   this.logger.debug(`Current pid: ${process.pid}`);
 
   const loadedLaunchAgents = await this.getLoadedLaunchAgents(BASE_AGENT_ID);
-  await removeLaunchAgents(loadedLaunchAgents.filter(e => !e.isRunning));
+  await removeLaunchAgents(loadedLaunchAgents.filter(({id, isRunning}) => id !== STARTUP_AGENT_ID && !isRunning));
   const currentlyRunningAgent = loadedLaunchAgents.find(
     ({ isRunning }) => isRunning
   );

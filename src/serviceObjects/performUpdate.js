@@ -2,7 +2,12 @@
 
 const suncalc = require("suncalc");
 
-const { TWENTY_FOUR_HOURS, NIGHT, DAY, RETRY_TIMEOUT } = require("../util/constants");
+const {
+  TWENTY_FOUR_HOURS,
+  NIGHT,
+  DAY,
+  RETRY_TIMEOUT
+} = require("../util/constants");
 
 const performUpdateWithLocation = location => {
   this.state.setAppState({ location });
@@ -12,20 +17,16 @@ const performUpdateWithLocation = location => {
     location.lat,
     location.lng
   );
-  const sunriseTomorrow = suncalc.getTimes(new Date(Date.now() + TWENTY_FOUR_HOURS), location.lat, location.lng).sunrise;
+  const sunriseTomorrow = suncalc.getTimes(
+    new Date(Date.now() + TWENTY_FOUR_HOURS),
+    location.lat,
+    location.lng
+  ).sunrise;
 
   this.logger.debug(`Daytime for ${location.lat},${location.lng}:`);
   this.logger.debug(`Sunrise today: ${sunrise}`);
   this.logger.debug(`Sunset today: ${sunset}`);
   this.logger.debug(`Sunrise tomorrow: ${sunriseTomorrow}`);
-
-  this.logger.info(JSON.stringify({
-    location,
-    time: Date.now(),
-    sunrise: sunrise.getTime(),
-    sunset: sunset.getTime(),
-    sunriseTomorrow: sunriseTomorrow.getTime()
-  }));
 
   const now = new Date();
   if (now < sunrise) {
@@ -48,6 +49,9 @@ const performUpdate = () => {
   this.logger.debug("Updating data...");
 
   const appState = this.state.getAppState();
+  if (!appState.startupAgentCreated) {
+    this.createStartupAgent();
+  }
   if (appState.locationSetManually) {
     performUpdateWithLocation(appState.location);
   } else {
@@ -55,9 +59,7 @@ const performUpdate = () => {
       .then(location => performUpdateWithLocation(location))
       .catch(() => {
         const nextUpdate = new Date(Date.now() + RETRY_TIMEOUT);
-        this.logger.debug(
-          `Unable to find location. Next retry: ${nextUpdate}`
-        );
+        this.logger.debug(`Unable to find location. Next retry: ${nextUpdate}`);
         this.scheduleUpdate(nextUpdate);
       });
   }
@@ -65,6 +67,7 @@ const performUpdate = () => {
 
 module.exports = ({
   state,
+  createStartupAgent,
   findLocation,
   changeTheme,
   scheduleUpdate,
@@ -72,6 +75,7 @@ module.exports = ({
   logger
 }) => {
   this.state = state;
+  this.createStartupAgent = createStartupAgent;
   this.findLocation = findLocation;
   this.changeTheme = changeTheme;
   this.scheduleUpdate = scheduleUpdate;

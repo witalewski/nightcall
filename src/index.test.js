@@ -6,6 +6,7 @@ describe("nightcall index", () => {
         expect(typeof(index.changeTheme)).toEqual("function");
         expect(typeof(index.removeAllAgentsAndFiles)).toEqual("function");
         expect(typeof(index.setLocation)).toEqual("function");
+        expect(typeof(index.displayHelp)).toEqual("function");
    });
  });
  

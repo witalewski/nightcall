@@ -4,16 +4,22 @@ const axios = require("axios");
 
 const findLocationOfWifiTowers = towers => {
   this.logger.debug("Attempting to find physical location of WiFi towers...");
+  this.logger.info(
+    JSON.stringify({
+      wifiAccessPoints: towers
+    })
+  );
   return new Promise((resolve, reject) => {
     axios
       .post(
-        "https://qw6c0mxwz9.execute-api.eu-west-1.amazonaws.com/default/nightcall",
+        this.url,
         JSON.stringify({
           wifiAccessPoints: towers
         }),
         {
           headers: {
-            "x-api-key": "S0a5WCywb68N075YgoTVK3TidPB11bus2vplyW9s"
+            "x-api-key": this.apiKey,
+            "Content-Type": "application/json"
           }
         }
       )
@@ -29,7 +35,8 @@ const findLocationOfWifiTowers = towers => {
   });
 };
 
-module.exports = ({ logger }) => {
+module.exports = ({ logger }) => ({ url, apiKey }) => {
+  (this.url = url), (this.apiKey = apiKey);
   this.logger = logger;
   return findLocationOfWifiTowers;
 };
