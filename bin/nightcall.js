@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 "use strict";
 
+const fs = require("fs");
+process.chdir(fs.realpathSync(`${__dirname}/..`));
+
 const nightcall = require("../src");
 const { DAY, NIGHT } = require("../src/util/constants");
 

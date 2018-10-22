@@ -7,19 +7,28 @@ const rimraf = require("rimraf");
 
 const readLaunchAgentTemplate = async path => {
   return new Promise((resolve, reject) => {
-    fs.readFile(
-      path,
-      "utf8",
-      (err, contents) => {
-        if (err || !contents) {
-          reject(err);
-        } else {
-          resolve(contents);
-        }
+    fs.readFile(path, "utf8", (err, contents) => {
+      if (err || !contents) {
+        reject(err);
+      } else {
+        resolve(contents);
       }
-    );
+    });
   });
 };
+
+const writeFile = async (path, contents) =>
+  new Promise((resolve, reject) => {
+    fs.writeFile(path, contents, err => {
+      if (err) {
+        this.logger.error("Failed writing nightcall Launch Agent file.");
+        reject(err);
+      } else {
+        this.logger.debug("Nightcall Launch Agent file written.");
+        resolve();
+      }
+    });
+  });
 
 const writeLaunchAgentFile = async (agentId, contents) => {
   this.logger.debug("Writing nightcall Launch Agent file...");
@@ -28,21 +37,12 @@ const writeLaunchAgentFile = async (agentId, contents) => {
       if (err) {
         reject(err);
       } else {
-        fs.writeFile(
+        writeFile(
           `${os.homedir()}/Library/LaunchAgents/${agentId}.plist`,
-          contents,
-          err => {
-            if (err) {
-              this.logger.error(
-                "Failer writing nightcall Launch Agent file."
-              );
-              reject(err);
-            } else {
-              this.logger.debug("Nightcall Launch Agent file written.");
-              resolve();
-            }
-          }
-        );
+          contents
+        )
+          .then(resolve)
+          .catch(reject);
       }
     });
   });
@@ -87,28 +87,27 @@ const removeCache = async () => {
   });
 };
 
-const removeLaunchAgentFile = () => {
+const removeLaunchAgentFile = id => {
   this.logger.debug("Removing Nightcall Launch Agent file...");
   return new Promise((resolve, reject) => {
     fs.access(
-      `${os.homedir()}/Library/LaunchAgents/tech.witalewski.nightcall.plist`,
+      `${os.homedir()}/Library/LaunchAgents/${id}.plist`,
       fs.constants.F_OK,
       err => {
         if (err) {
           this.logger.debug("No Launch Agent file was present.");
           resolve();
         } else {
-          fs.unlink(
-            `${os.homedir()}/Library/LaunchAgents/tech.witalewski.nightcall.plist`,
-            err => {
-              if (err) {
-                this.logger.error("Failed to remove Nightcall Launch Agent file.");
-                reject();
-              }
-              this.logger.debug("Removed Nightcall Launch Agent file.");
-              resolve();
+          fs.unlink(`${os.homedir()}/Library/LaunchAgents/${id}.plist`, err => {
+            if (err) {
+              this.logger.error(
+                "Failed to remove Nightcall Launch Agent file."
+              );
+              reject();
             }
-          );
+            this.logger.debug("Removed Nightcall Launch Agent file.");
+            resolve();
+          });
         }
       }
     );

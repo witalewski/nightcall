@@ -7,31 +7,40 @@ const {
   NIGHTCALL_DIR_PLACEHOLDER_REGEX,
   AGENT_ID_PLACEHOLDER_REGEX,
   MINUTES_PLACEHOLDER_REGEX,
-  HOURS_PLACEHOLDER_REGEX,
-  RUN_AT_LOAD_REGEX,
-  CALENDAR_INTERVAL_REGEX
+  HOURS_PLACEHOLDER_REGEX
 } = require("../util/constants");
 
 const removeLaunchAgents = async agents => {
-  const promises = [];
+  const removeLaunchAgentPromises = [];
   agents.forEach(({ id }) => {
-    promises.push(this.removeLaunchAgent(id));
-    promises.push(this.removeLaunchAgentFile(id));
+    removeLaunchAgentPromises.push(this.removeLaunchAgent(id));
   });
-  return Promise.all(promises);
+  return Promise.all(removeLaunchAgentPromises);
+};
+
+const removeLaunchAgentFiles = async agents => {
+  const removeLaunchAgentFilePromises = [];
+  agents.forEach(({ id }) => {
+    removeLaunchAgentFilePromises.push(this.removeLaunchAgentFile(id));
+  });
+  return Promise.all(removeLaunchAgentFilePromises);
 };
 
 const scheduleUpdate = async date => {
-  const fixedDate = new Date((date.getTime() + 60 * 1000));
+  const fixedDate = new Date(date.getTime() + 60 * 1000);
   const minutes = fixedDate.getMinutes();
   const hours = fixedDate.getHours();
 
-  this.state.setAppState({nextUpdate: fixedDate});
+  this.state.setAppState({ nextUpdate: fixedDate });
   this.logger.debug(`Scheduling next update to ${fixedDate}`);
   this.logger.debug(`Current pid: ${process.pid}`);
 
   const loadedLaunchAgents = await this.getLoadedLaunchAgents(BASE_AGENT_ID);
-  await removeLaunchAgents(loadedLaunchAgents.filter(({id, isRunning}) => id !== STARTUP_AGENT_ID && !isRunning));
+  const filteredLoadedLaunchAgents = loadedLaunchAgents.filter(
+    ({ id, isRunning }) => id !== STARTUP_AGENT_ID && !isRunning
+  );
+  await removeLaunchAgents(filteredLoadedLaunchAgents);
+  await removeLaunchAgentFiles(filteredLoadedLaunchAgents);
   const currentlyRunningAgent = loadedLaunchAgents.find(
     ({ isRunning }) => isRunning
   );
@@ -40,7 +49,9 @@ const scheduleUpdate = async date => {
       ? AUX_AGENT_ID
       : BASE_AGENT_ID;
 
-  const contents = await this.readLaunchAgentTemplate("template.plist");
+  const contents = await this.readLaunchAgentTemplate(
+    `${process.cwd()}/src/templates/base.plist`
+  );
 
   await this.writeLaunchAgentFile(
     targetAgentId,
@@ -49,8 +60,6 @@ const scheduleUpdate = async date => {
       .replace(AGENT_ID_PLACEHOLDER_REGEX, targetAgentId)
       .replace(MINUTES_PLACEHOLDER_REGEX, minutes)
       .replace(HOURS_PLACEHOLDER_REGEX, hours)
-      .replace(RUN_AT_LOAD_REGEX, false)
-      .replace(CALENDAR_INTERVAL_REGEX, '')
   );
 
   await this.loadLaunchAgent(targetAgentId);

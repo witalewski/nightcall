@@ -4,7 +4,7 @@ jest.mock("../util/logger");
 const { STARTUP_AGENT_ID } = require("../util/constants");
 
 const mockLaunchAgentFileTemplate =
-  "Nightcall dir: $NIGHTCALL_DIR, $CALENDAR_INTERVALMinutes: $MINUTES, Hours: $HOURS$CALENDAR_INTERVAL";
+  "Nightcall dir: $NIGHTCALL_DIR";
 const mockState = {
   setAppState: jest.fn()
 };
@@ -19,7 +19,7 @@ const mockFsProxy = {
 
 describe("createStartupAgent", () => {
   test("creates startup agent", done => {
-    const expectedResult = `Nightcall dir: ${process.cwd()}, `;
+    const expectedResult = `Nightcall dir: ${process.cwd()}`;
     const createStartupAgent = require("./createStartupAgent")({
       state: mockState,
       fsProxy: mockFsProxy,

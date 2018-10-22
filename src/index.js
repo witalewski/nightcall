@@ -1,6 +1,8 @@
+"use strict";
+
 const logger = require("./util/logger");
 const LocalStorage = require("node-localstorage").LocalStorage;
-const state = require("./state")(new LocalStorage("./cache"));
+const state = require("./state")(new LocalStorage(`${process.cwd()}/cache`));
 const getIP = require("./serviceObjects/getIP")({
   publicIP: require("public-ip"),
   logger

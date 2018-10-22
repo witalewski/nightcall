@@ -1,12 +1,16 @@
+const { STARTUP_AGENT_ID } = require("../util/constants");
+
 const removeAllAgentsAndFiles = () =>
   new Promise((resolve, reject) => {
     this.getLoadedLaunchAgents().then(loadedLaunchAgents => {
       const cleanUpPromises = [];
-      loadedLaunchAgents.filter(e => !e.isRunning).forEach(({ id }) => {
+      loadedLaunchAgents.forEach(({ id }) => {
         cleanUpPromises.push(this.removeLaunchAgent(id));
-        cleanUpPromises.push(this.removeLaunchAgentFile(id));
       });
       Promise.all(cleanUpPromises).then(() => {
+        [...loadedLaunchAgents, { id: STARTUP_AGENT_ID }].forEach(({ id }) => {
+          this.removeLaunchAgentFile(id);
+        });
         this.removeLogs();
         this.removeCache();
         resolve();

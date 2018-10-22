@@ -3,7 +3,7 @@
 <plist version="1.0">
     <dict>
         <key>Label</key>
-        <string>$AGENT_ID</string>
+        <string>local.nightcall.startup</string>
 
         <key>WorkingDirectory</key>
         <string>$NIGHTCALL_DIR</string>
@@ -15,20 +15,10 @@
         </array>
 
         <key>RunAtLoad</key>
-        <$RUN_AT_LOAD/>
+        <true/>
 
         <key>KeepAlive</key>
         <false/>
-
-        $CALENDAR_INTERVAL
-        <key>StartCalendarInterval</key>
-        <dict>
-            <key>Minute</key>
-            <integer>$MINUTES</integer>
-            <key>Hour</key>
-            <integer>$HOURS</integer>
-        </dict>
-        $CALENDAR_INTERVAL
 
     </dict>
 </plist>
