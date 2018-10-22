@@ -24,7 +24,7 @@ Nightcall will be installed globally and automatic setup will follow right after
 
 ## Running the tests
 
-To run tests locally, go to the module directory and execute `npm run jest`
+To run tests locally, go to the module directory and execute `yarn run jest`
 
 ## Built With
 
