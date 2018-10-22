@@ -44,7 +44,6 @@ const performUpdateWithLocation = location => {
 };
 
 const performUpdate = () => {
-  this.showDialog("Nightcall update");
   this.updateTimer = Date.now();
   this.logger.debug("Updating data...");
 
@@ -71,7 +70,6 @@ module.exports = ({
   findLocation,
   changeTheme,
   scheduleUpdate,
-  osProxy,
   logger
 }) => {
   this.state = state;
@@ -79,7 +77,6 @@ module.exports = ({
   this.findLocation = findLocation;
   this.changeTheme = changeTheme;
   this.scheduleUpdate = scheduleUpdate;
-  this.showDialog = osProxy.showDialog;
   this.logger = logger;
 
   return performUpdate;

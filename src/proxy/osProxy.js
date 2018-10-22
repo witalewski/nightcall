@@ -78,21 +78,6 @@ const getLoadedLaunchAgents = async () => {
   });
 };
 
-const showDialog = async msg => {
-  return new Promise((resolve, reject) => {
-    childProcess.exec(
-      `osascript -e 'tell app "System Events" to display dialog "${msg}" with title "Nightcall"'`,
-      {},
-      (error, stdout, stderr) => {
-        if (error || stderr) {
-          reject();
-        }
-        resolve();
-      }
-    );
-  });
-};
-
 const setOSDarkMode = value => {
   return new Promise((resolve, reject) => {
     childProcess.exec(
@@ -114,7 +99,6 @@ module.exports = ({ logger }) => {
     loadLaunchAgent,
     removeLaunchAgent,
     getLoadedLaunchAgents,
-    showDialog,
     setOSDarkMode
   };
 };

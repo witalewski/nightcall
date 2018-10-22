@@ -39,9 +39,6 @@ const mockStateWithManuallyOverriddenLocation = {
 };
 const findLocation = jest.fn(async () => mockLocation);
 const changeTheme = jest.fn();
-const osProxy = {
-  showDialog: jest.fn()
-};
 const createStartupAgent = jest.fn();
 
 describe("performUpdate", () => {
@@ -52,7 +49,6 @@ describe("performUpdate", () => {
       createStartupAgent,
       findLocation,
       changeTheme,
-      osProxy,
       logger
     };
   });

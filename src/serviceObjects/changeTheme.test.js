@@ -8,7 +8,6 @@ const state = {
 };
 const osProxy = {
   setOSDarkMode: jest.fn(value => value),
-  showDialog: jest.fn(() => {})
 };
 const writeWatchfile = jest.fn();
 

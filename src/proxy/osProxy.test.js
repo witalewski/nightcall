@@ -79,40 +79,6 @@ describe("osProxy", () => {
     });
   });
 
-  test("shows dialog", done => {
-    const exec = sinon
-      .stub(childProcess, "exec")
-      .callsFake((command, options, callback) => {
-        expect(command).toEqual(
-          `osascript -e 'tell app "System Events" to display dialog "${MESSAGE}" with title "Nightcall"'`
-        );
-        callback();
-      });
-    stubs = [exec];
-
-    osProxy.showDialog(MESSAGE).then(() => {
-      expect(exec.called).toEqual(true);
-      done();
-    });
-  });
-
-  test("handles error while showing dialog", done => {
-    const exec = sinon
-      .stub(childProcess, "exec")
-      .callsFake((command, options, callback) => {
-        expect(command).toEqual(
-          `osascript -e 'tell app "System Events" to display dialog "${MESSAGE}" with title "Nightcall"'`
-        );
-        callback(ERROR);
-      });
-    stubs = [exec];
-
-    osProxy.showDialog(MESSAGE).catch(() => {
-      expect(exec.called).toEqual(true);
-      done();
-    });
-  });
-
   test("sets dark mode", done => {
     const exec = sinon
       .stub(childProcess, "exec")

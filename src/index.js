@@ -61,7 +61,6 @@ const performUpdate = require("./serviceObjects/performUpdate")({
   findLocation,
   changeTheme,
   scheduleUpdate,
-  osProxy,
   logger
 });
 const setLocation = require("./ui/setLocation")({ state, performUpdate });
