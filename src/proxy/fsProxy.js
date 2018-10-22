@@ -21,10 +21,10 @@ const writeFile = async (path, contents) =>
   new Promise((resolve, reject) => {
     fs.writeFile(path, contents, err => {
       if (err) {
-        this.logger.error("Failed writing nightcall Launch Agent file.");
+        this.logger.error(`Failed to write file: ${path}`);
         reject(err);
       } else {
-        this.logger.debug("Nightcall Launch Agent file written.");
+        this.logger.debug(`File written: ${path}`);
         resolve();
       }
     });
