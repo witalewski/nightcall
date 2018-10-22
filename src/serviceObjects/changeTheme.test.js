@@ -10,11 +10,13 @@ const osProxy = {
   setOSDarkMode: jest.fn(value => value),
   showDialog: jest.fn(() => {})
 };
+const writeWatchfile = jest.fn();
 
 describe("changeTheme", () => {
   const params = {
     osProxy,
     state,
+    writeWatchfile,
     logger
   };
 
@@ -23,6 +25,7 @@ describe("changeTheme", () => {
 
     changeTheme(DAY);
     expect(osProxy.setOSDarkMode).toBeCalledWith(false);
+    expect(writeWatchfile).toBeCalledWith(DAY);
   });
 
   test("properly sets night theme", () => {
@@ -30,5 +33,6 @@ describe("changeTheme", () => {
 
     changeTheme(NIGHT);
     expect(osProxy.setOSDarkMode).toBeCalledWith(true);
+    expect(writeWatchfile).toBeCalledWith(NIGHT);
   });
 });

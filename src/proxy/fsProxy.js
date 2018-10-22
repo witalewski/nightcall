@@ -118,6 +118,7 @@ module.exports = ({ logger }) => {
   this.logger = logger;
   return {
     readLaunchAgentTemplate,
+    writeFile,
     writeLaunchAgentFile,
     removeLogs,
     removeCache,

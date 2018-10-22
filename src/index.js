@@ -20,7 +20,8 @@ const findLocationOfWifiTowers = require("./serviceObjects/findLocationOfWifiTow
   }
 )({
   // proxied by default, change url to https://www.googleapis.com/geolocation/v1/geolocate?key=YOUR_KEY to use google apis directly
-  url: "https://qw6c0mxwz9.execute-api.eu-west-1.amazonaws.com/default/lightswitch",
+  url:
+    "https://qw6c0mxwz9.execute-api.eu-west-1.amazonaws.com/default/lightswitch",
   apiKey: "S0a5WCywb68N075YgoTVK3TidPB11bus2vplyW9s"
 });
 const findLocation = require("./serviceObjects/findLocation")({
@@ -36,9 +37,11 @@ const fsProxy = require("./proxy/fsProxy")({ logger });
 const removeAllAgentsAndFiles = require("./serviceObjects/removeAllAgentsAndFiles")(
   { osProxy, fsProxy, logger }
 );
+const writeWatchfile = require("./serviceObjects/writeWatchfile")({ fsProxy });
 const changeTheme = require("./serviceObjects/changeTheme")({
   osProxy,
   state,
+  writeWatchfile,
   logger
 });
 const scheduleUpdate = require("./serviceObjects/scheduleUpdate")({
