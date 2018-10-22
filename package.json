@@ -1,6 +1,6 @@
 {
   "name": "nightcall",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Automatically toggle between Light and Dark system themes based on sunrise and sunset",
   "main": "src/index.js",
   "author": "Kris Witalewski",
