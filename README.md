@@ -22,6 +22,8 @@ yarn global add nightcall
 
 Nightcall will be installed globally and automatic setup will follow right after installation.
 
+There is a [Nightcall (VS Code)](https://marketplace.visualstudio.com/items?itemName=witalewski.nightcall-vs-code) extension available to switch between dark and light themes in VS Code in sync with Nightcall.
+
 ## Running the tests
 
 To run tests locally, go to the module directory and execute `yarn run jest`
