@@ -16,8 +16,12 @@ As of today, Nightcall only works with macOS. Standalone installation will make 
 
 Just run:
 
-```
+```sh
 yarn global add nightcall
+```
+or:
+```sh
+npm i -g nightcall
 ```
 
 Nightcall will be installed globally and automatic setup will follow right after installation.
