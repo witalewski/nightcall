@@ -44,10 +44,14 @@ const performUpdateWithLocation = location => {
 };
 
 const performUpdate = () => {
+  const appState = this.state.getAppState();
+  if (appState.updatesPaused) {
+    return;
+  }
+
   this.updateTimer = Date.now();
   this.logger.debug("Updating data...");
 
-  const appState = this.state.getAppState();
   if (!appState.startupAgentCreated) {
     this.createStartupAgent();
   }
