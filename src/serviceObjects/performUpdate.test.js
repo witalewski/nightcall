@@ -39,7 +39,7 @@ const mockStateWithManuallyOverriddenLocation = {
 };
 const mockStateWithPausedUpdates = {
   getAppState: jest.fn(() => ({
-    updatesPaused: utruendefined
+    updatesPaused: true
   })),
   setAppState: jest.fn()
 };
@@ -197,7 +197,7 @@ describe("performUpdate", () => {
       performUpdate = require("./performUpdate")({
         ...params,
         scheduleUpdate,
-        state: mockStateWithoutStartupAgent
+        state: mockStateWithPausedUpdates
       });
       performUpdate();
       expect(scheduleUpdate).not.toHaveBeenCalled();

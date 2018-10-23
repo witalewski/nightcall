@@ -65,6 +65,8 @@ const performUpdate = require("./serviceObjects/performUpdate")({
 });
 const setLocation = require("./ui/setLocation")({ state, performUpdate });
 const displayHelp = require("./ui/displayHelp");
+const pauseUpdates = require("./serviceObjects/pauseUpdates")({state});
+const resumeUpdates = require("./serviceObjects/resumeUpdates")({state});
 
 module.exports = {
   performUpdate,
@@ -72,5 +74,7 @@ module.exports = {
   removeAllAgentsAndFiles,
   setLocation,
   displayHelp,
-  createStartupAgent
+  createStartupAgent,
+  pauseUpdates,
+  resumeUpdates
 };
