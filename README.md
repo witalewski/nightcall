@@ -43,6 +43,8 @@ To run tests locally, go to the module directory and execute `yarn run jest`
 
 * [NightSwitch](https://marketplace.visualstudio.com/items?itemName=gharveymn.nightswitch) - VS Code extension for switching between light and dark theme on sunrise and sunset
 
+The name comes from a Kavinsky song from Drive soundtrack:
+[![Kavinsky - Nightcall on Youtube](https://img.youtube.com/vi/MV_3Dpw-BRY/0.jpg)](https://www.youtube.com/watch?v=MV_3Dpw-BRY "Kavinsky - Nightcall (Drive Original Movie Soundtrack) (Official Audio)")
 ## Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONCUCT.md](CODE_OF_CONDUCT.md) for details on our code of conduct, and the process for submitting pull requests to us.
