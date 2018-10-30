@@ -22,6 +22,8 @@ yarn global add nightcall
 
 Nightcall will be installed globally and automatic setup will follow right after installation.
 
+![Nightcall demo GIF](https://media.giphy.com/media/d2a9dVmhW4vb1vw0zU/giphy.gif)
+
 ## Running the tests
 
 To run tests locally, go to the module directory and execute `yarn run jest`
