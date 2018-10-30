@@ -37,6 +37,13 @@ const mockStateWithManuallyOverriddenLocation = {
   })),
   setAppState: jest.fn()
 };
+const mockStateWithPausedUpdates = {
+  getAppState: jest.fn(() => ({
+    updatesPaused: true
+  })),
+  setAppState: jest.fn()
+};
+
 const findLocation = jest.fn(async () => mockLocation);
 const changeTheme = jest.fn();
 const createStartupAgent = jest.fn();
@@ -183,6 +190,17 @@ describe("performUpdate", () => {
       });
       performUpdate();
       expect(createStartupAgent).toHaveBeenCalled();
+    });
+
+    test("aborts if updates are paused", () => {
+      const scheduleUpdate = jest.fn();
+      performUpdate = require("./performUpdate")({
+        ...params,
+        scheduleUpdate,
+        state: mockStateWithPausedUpdates
+      });
+      performUpdate();
+      expect(scheduleUpdate).not.toHaveBeenCalled();
     });
   });
 });

@@ -16,11 +16,18 @@ As of today, Nightcall only works with macOS. Standalone installation will make 
 
 Just run:
 
-```
+```sh
 yarn global add nightcall
+```
+or:
+```sh
+npm i -g nightcall
 ```
 
 Nightcall will be installed globally and automatic setup will follow right after installation.
+
+
+There is a [Nightcall (VS Code)](https://marketplace.visualstudio.com/items?itemName=witalewski.nightcall-vs-code) extension available to switch between dark and light themes in VS Code in sync with Nightcall.
 
 ![Nightcall demo GIF](https://media.giphy.com/media/d2a9dVmhW4vb1vw0zU/giphy.gif)
 
