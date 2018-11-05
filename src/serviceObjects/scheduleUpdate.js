@@ -49,7 +49,7 @@ const scheduleUpdate = async date => {
       ? AUX_AGENT_ID
       : BASE_AGENT_ID;
 
-  const contents = await this.readLaunchAgentTemplate(
+  const contents = await this.readFile(
     `${process.cwd()}/src/templates/base.plist`
   );
 
@@ -72,7 +72,7 @@ module.exports = ({ state, osProxy, fsProxy, logger }) => {
   this.loadLaunchAgent = osProxy.loadLaunchAgent;
   this.getLoadedLaunchAgents = osProxy.getLoadedLaunchAgents;
   this.removeLaunchAgent = osProxy.removeLaunchAgent;
-  this.readLaunchAgentTemplate = fsProxy.readLaunchAgentTemplate;
+  this.readFile = fsProxy.readFile;
   this.writeLaunchAgentFile = fsProxy.writeLaunchAgentFile;
   this.removeLaunchAgentFile = fsProxy.removeLaunchAgentFile;
   this.logger = logger;

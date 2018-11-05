@@ -38,10 +38,16 @@ const removeAllAgentsAndFiles = require("./serviceObjects/removeAllAgentsAndFile
   { osProxy, fsProxy, logger }
 );
 const writeWatchfile = require("./serviceObjects/writeWatchfile")({ fsProxy });
+const changeHyperTheme = require("./serviceObjects/changeHyperTheme")({
+  osProxy,
+  fsProxy,  
+  logger
+});
 const changeTheme = require("./serviceObjects/changeTheme")({
   osProxy,
   state,
   writeWatchfile,
+  changeHyperTheme,
   logger
 });
 const scheduleUpdate = require("./serviceObjects/scheduleUpdate")({

@@ -93,12 +93,15 @@ const setOSDarkMode = value => {
   });
 };
 
+const getHomeDir = () => os.homedir();
+
 module.exports = ({ logger }) => {
   this.logger = logger;
   return {
     loadLaunchAgent,
     removeLaunchAgent,
     getLoadedLaunchAgents,
-    setOSDarkMode
+    setOSDarkMode,
+    getHomeDir
   };
 };

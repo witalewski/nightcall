@@ -5,7 +5,7 @@ const os = require("os");
 const mkdirp = require("mkdirp");
 const rimraf = require("rimraf");
 
-const readLaunchAgentTemplate = async path => {
+const readFile = async path => {
   return new Promise((resolve, reject) => {
     fs.readFile(path, "utf8", (err, contents) => {
       if (err || !contents) {
@@ -117,7 +117,7 @@ const removeLaunchAgentFile = id => {
 module.exports = ({ logger }) => {
   this.logger = logger;
   return {
-    readLaunchAgentTemplate,
+    readFile,
     writeFile,
     writeLaunchAgentFile,
     removeLogs,

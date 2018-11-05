@@ -9,6 +9,7 @@ const state = {
 const osProxy = {
   setOSDarkMode: jest.fn(value => value),
 };
+const changeHyperTheme = jest.fn();
 const writeWatchfile = jest.fn();
 
 describe("changeTheme", () => {
@@ -16,6 +17,7 @@ describe("changeTheme", () => {
     osProxy,
     state,
     writeWatchfile,
+    changeHyperTheme,
     logger
   };
 
