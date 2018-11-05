@@ -3,7 +3,7 @@
 const { NIGHT } = require("../util/constants");
 
 const changeHyperTheme = theme => {
-  const hyperConfigPath = `${this.osProxy.getHomeDir()}/.hyper.js-nonexistent`;
+  const hyperConfigPath = `${this.osProxy.getHomeDir()}/.hyper.js`;
   const solarizedDarkPattern = /(\/\/\s*)?(\"|\')hyper-solarized(\"|\')/;
   const solarizedLightPattern = /(\/\/\s*)?(\"|\')hyper-solarized-light(\"|\')/;
   this.fsProxy.readFile(hyperConfigPath).then(contents => {
