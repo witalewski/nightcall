@@ -9,7 +9,7 @@ const mockState = {
   setAppState: jest.fn()
 };
 const mockFsProxy = {
-  readLaunchAgentTemplate: jest.fn(
+  readFile: jest.fn(
     () => new Promise((resolve, reject) => resolve(mockLaunchAgentFileTemplate))
   ),
   writeLaunchAgentFile: jest.fn(

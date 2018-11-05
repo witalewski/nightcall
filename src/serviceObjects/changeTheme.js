@@ -8,12 +8,14 @@ const changeTheme = theme => {
   this.setOSDarkMode(theme === NIGHT);
   this.state.setAppState({ theme });
   this.writeWatchfile(theme);
+  this.changeHyperTheme(theme);
 };
 
-module.exports = ({ osProxy, state, writeWatchfile, logger }) => {
+module.exports = ({ osProxy, state, writeWatchfile, changeHyperTheme, logger }) => {
   this.setOSDarkMode = osProxy.setOSDarkMode;
   this.state = state;
   this.writeWatchfile = writeWatchfile;
+  this.changeHyperTheme = changeHyperTheme;
   this.logger = logger;
 
   return changeTheme;

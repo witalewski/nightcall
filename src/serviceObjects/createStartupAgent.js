@@ -6,7 +6,7 @@ const {
 } = require("../util/constants");
 
 const createStartupAgent = async () => {
-  const contents = await this.readLaunchAgentTemplate(`${process.cwd()}/src/templates/startup.plist`);
+  const contents = await this.readFile(`${process.cwd()}/src/templates/startup.plist`);
   await this.writeLaunchAgentFile(
     STARTUP_AGENT_ID,
     contents
@@ -18,7 +18,7 @@ const createStartupAgent = async () => {
 
 module.exports = ({ state, fsProxy, logger }) => {
   this.state = state;
-  this.readLaunchAgentTemplate = fsProxy.readLaunchAgentTemplate;
+  this.readFile = fsProxy.readFile;
   this.writeLaunchAgentFile = fsProxy.writeLaunchAgentFile;
   this.logger = logger;
   return createStartupAgent;

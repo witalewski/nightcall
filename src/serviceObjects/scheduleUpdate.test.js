@@ -29,7 +29,7 @@ const mockOsProxyAux = {
   removeLaunchAgent: jest.fn(() => new Promise((resolve, reject) => resolve()))
 };
 const mockFsProxy = {
-  readLaunchAgentTemplate: jest.fn(
+  readFile: jest.fn(
     () => new Promise((resolve, reject) => resolve(mockLaunchAgentFileTemplate))
   ),
   writeLaunchAgentFile: jest.fn(
@@ -60,7 +60,7 @@ describe("scheduleUpdate", () => {
     scheduleUpdate(now).then(() => {
       expect(mockOsProxyBase.removeLaunchAgent).toHaveBeenCalledWith(AUX_AGENT_ID);
       expect(mockFsProxy.removeLaunchAgentFile).toHaveBeenCalledWith(AUX_AGENT_ID);
-      expect(mockFsProxy.readLaunchAgentTemplate).toHaveBeenCalled();
+      expect(mockFsProxy.readFile).toHaveBeenCalled();
       expect(mockFsProxy.writeLaunchAgentFile).toHaveBeenCalledWith(
         "local.nightcall.aux",
         expectedResult
@@ -81,7 +81,7 @@ describe("scheduleUpdate", () => {
     scheduleUpdate(now).then(() => {
       expect(mockOsProxyAux.removeLaunchAgent).toHaveBeenCalledWith(BASE_AGENT_ID);
       expect(mockFsProxy.removeLaunchAgentFile).toHaveBeenCalledWith(BASE_AGENT_ID);
-      expect(mockFsProxy.readLaunchAgentTemplate).toHaveBeenCalled();
+      expect(mockFsProxy.readFile).toHaveBeenCalled();
       expect(mockFsProxy.writeLaunchAgentFile).toHaveBeenCalledWith(
         "local.nightcall.base",
         expectedResult
@@ -93,19 +93,19 @@ describe("scheduleUpdate", () => {
 
   test("propagates read file error", done => {
     const now = new Date();
-    const readLaunchAgentTemplate = jest.fn(
+    const readFile = jest.fn(
       () => new Promise((resolve, reject) => reject())
     );
     scheduleUpdate = require("./scheduleUpdate")({
       ...params,
       fsProxy: {
         ...mockFsProxy,
-        readLaunchAgentTemplate
+        readFile
       }
     });
 
     scheduleUpdate(now).catch(() => {
-      expect(readLaunchAgentTemplate).toHaveBeenCalled();
+      expect(readFile).toHaveBeenCalled();
       done();
     });
   });

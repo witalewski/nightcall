@@ -34,7 +34,7 @@ describe("fsProxy", () => {
     const fsRead = sinon.stub(fs, "readFile").callsArgWith(2, null, OUTPUT);
     stubs = [fsRead];
 
-    fsProxy.readLaunchAgentTemplate().then(contents => {
+    fsProxy.readFile().then(contents => {
       expect(fsRead.called).toEqual(true);
       expect(contents).toEqual(OUTPUT);
       done();
@@ -45,7 +45,7 @@ describe("fsProxy", () => {
     const fsRead = sinon.stub(fs, "readFile").callsArgWith(2, ERROR);
     stubs = [fsRead];
 
-    fsProxy.readLaunchAgentTemplate().catch(error => {
+    fsProxy.readFile().catch(error => {
       expect(fsRead.called).toEqual(true);
       expect(error).toEqual(ERROR);
       done();
@@ -56,7 +56,7 @@ describe("fsProxy", () => {
     const fsRead = sinon.stub(fs, "readFile").callsArgWith(2, ERROR);
     stubs = [fsRead];
 
-    fsProxy.readLaunchAgentTemplate().catch(err => {
+    fsProxy.readFile().catch(err => {
       expect(fsRead.called).toEqual(true);
       expect(err).toEqual(ERROR);
       done();
