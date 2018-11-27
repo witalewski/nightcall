@@ -6,11 +6,7 @@ const state = require("./state")(new LocalStorage(`${process.cwd()}/cache`));
 const getIP = require("./serviceObjects/getIP");
 const findLocationOfIP = require("./serviceObjects/findLocationOfIP");
 const getWifiTowers = require("./serviceObjects/getWifiTowers");
-const findLocationOfWifiTowers = require("./serviceObjects/findLocationOfWifiTowers")(
-  {
-    logger
-  }
-)({
+const findLocationOfWifiTowers = require("./serviceObjects/findLocationOfWifiTowers")({
   // proxied by default, change url to https://www.googleapis.com/geolocation/v1/geolocate?key=YOUR_KEY to use google apis directly
   url:
     "https://qw6c0mxwz9.execute-api.eu-west-1.amazonaws.com/default/lightswitch",

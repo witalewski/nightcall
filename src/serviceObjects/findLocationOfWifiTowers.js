@@ -1,10 +1,11 @@
 "use strict";
 
 const axios = require("axios");
+const logger = require("../util/logger");
 
 const findLocationOfWifiTowers = towers => {
-  this.logger.debug("Attempting to find physical location of WiFi towers...");
-  this.logger.info(
+  logger.debug("Attempting to find physical location of WiFi towers...");
+  logger.info(
     JSON.stringify({
       wifiAccessPoints: towers
     })
@@ -28,15 +29,15 @@ const findLocationOfWifiTowers = towers => {
           location: { lat, lng }
         } = data;
         const location = { lat, lng };
-        this.logger.debug(`Location found: ${JSON.stringify(location)}`);
+        logger.debug(`Location found: ${JSON.stringify(location)}`);
         resolve(location);
       })
       .catch(err => reject(err));
   });
 };
 
-module.exports = ({ logger }) => ({ url, apiKey }) => {
-  (this.url = url), (this.apiKey = apiKey);
-  this.logger = logger;
+module.exports = ({ url, apiKey }) => {
+  this.url = url;
+  this.apiKey = apiKey;
   return findLocationOfWifiTowers;
 };

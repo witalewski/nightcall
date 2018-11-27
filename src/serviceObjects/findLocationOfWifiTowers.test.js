@@ -14,8 +14,6 @@ const LOCATION = { lat: 53.1, lng: 13 };
 describe("findLocationOfWifiTowers", () => {
   test("returns location of Wifi towers", done => {
     const findLocationOfWifiTowers = require("./findLocationOfWifiTowers")({
-      logger
-    })({
       url: "http://whatever.com",
       apiKey: ""
     });
@@ -29,8 +27,6 @@ describe("findLocationOfWifiTowers", () => {
 
   test("handles error while searching for location of Wifi towers", done => {
     const findLocationOfWifiTowers = require("./findLocationOfWifiTowers")({
-      logger
-    })({
       url: "http://whatever.com",
       apiKey: ""
     });
