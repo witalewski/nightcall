@@ -1,20 +1,18 @@
 "use strict";
+const logger = require("../util/logger");
+const publicIP = require("public-ip");
 
 const getIP = () => {
-  this.logger.debug("Checking public IP...");
+  logger.debug("Checking public IP...");
   return new Promise((resolve, reject) => {
-    this.publicIP
+    publicIP
       .v4()
       .then(ip => {
-        this.logger.debug(`Public IP: ${ip}`);
+        logger.debug(`Public IP: ${ip}`);
         resolve(ip);
       })
       .catch(err => reject(err));
   });
 };
 
-module.exports = ({publicIP, logger}) => {
-  this.publicIP = publicIP;
-  this.logger = logger;
-  return getIP;
-}
+module.exports = getIP;

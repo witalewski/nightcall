@@ -3,13 +3,8 @@
 const logger = require("./util/logger");
 const LocalStorage = require("node-localstorage").LocalStorage;
 const state = require("./state")(new LocalStorage(`${process.cwd()}/cache`));
-const getIP = require("./serviceObjects/getIP")({
-  publicIP: require("public-ip"),
-  logger
-});
-const findLocationOfIP = require("./serviceObjects/findLocationOfIP")({
-  logger
-});
+const getIP = require("./serviceObjects/getIP");
+const findLocationOfIP = require("./serviceObjects/findLocationOfIP");
 const getWifiTowers = require("./serviceObjects/getWifiTowers")({
   wifiScanner: require("node-wifiscanner"),
   logger

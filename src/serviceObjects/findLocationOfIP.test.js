@@ -1,3 +1,4 @@
+const findLocationOfIP = require("./findLocationOfIP");
 const axios = require("axios");
 jest.mock("axios");
 
@@ -13,9 +14,7 @@ const LOCATION = { lat: 53.1, lng: 13 };
 
 describe("findLocationOfIP", () => {
   test("returns location of IP", done => {
-    const findLocationOfIP = require("./findLocationOfIP")({ logger });
     axios.get.mockResolvedValue(RESPONSE);
-
     findLocationOfIP("127.0.0.1").then(location => {
       expect(location).toEqual(LOCATION);
       done();
@@ -23,9 +22,7 @@ describe("findLocationOfIP", () => {
   });
   
   test("handles error while searching for location of IP", done => {
-    const findLocationOfIP = require("./findLocationOfIP")({ logger });
     axios.get.mockResolvedValue(ERROR_RESPONSE);
-
     findLocationOfIP("127.0.0.1").catch(() => {
       done();
     });
