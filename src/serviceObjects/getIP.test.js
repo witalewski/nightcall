@@ -18,8 +18,8 @@ describe("getIP", () => {
   });
 
   test("resolves when IP is found", done => {
-    const exec = sinon.stub(publicIP, "v4").callsFake(async () => mockIP);
-    stubs = [exec];
+    const v4 = sinon.stub(publicIP, "v4").callsFake(async () => mockIP);
+    stubs = [v4];
 
     getIP().then(ip => {
       expect(ip).toEqual(mockIP);
@@ -28,10 +28,10 @@ describe("getIP", () => {
   });
 
   test("rejects when IP is not", done => {
-    const exec = sinon.stub(publicIP, "v4").callsFake(async () => {
+    const v4 = sinon.stub(publicIP, "v4").callsFake(async () => {
       throw mockErr;
     });
-    stubs = [exec];
+    stubs = [v4];
 
     getIP().catch(err => {
       expect(err).toEqual(mockErr);

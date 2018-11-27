@@ -1,4 +1,8 @@
+const getWifiTowers = require("./getWifiTowers");
+
 const logger = require("../util/logger");
+const sinon = require("sinon");
+const wifiScanner = require("node-wifiscanner");
 jest.mock("../util/logger");
 
 const mockMacs = ["mac:1", "mac:2"];
@@ -24,25 +28,19 @@ const mockProcessedTowers = [
     signalStrength: mockSignalLevels[1]
   }
 ];
-const mockScanner = {
-  scan: jest.fn(async callback => {
-    callback(null, mockTowersRawData);
-  })
-};
-const mockFailingScanner = {
-  scan: jest.fn(async callback => {
-    callback(mockErr);
-  })
-};
 
 describe("getWifiTowers", () => {
-  const params = {
-    wifiScanner: mockScanner,
-    logger
-  };
 
+  let stubs = [];
+
+  afterEach(() => {
+    stubs.forEach(stub => stub.restore());
+    stubs = [];
+  });
+  
   test("resolves when towers are found", done => {
-    const getWifiTowers = require("./getWifiTowers")(params);
+    const scan = sinon.stub(wifiScanner, "scan").callsFake(async callback => callback(null, mockTowersRawData));
+    stubs = [scan];
 
     getWifiTowers().then(towers => {
       expect(towers).toEqual(mockProcessedTowers);
@@ -51,10 +49,8 @@ describe("getWifiTowers", () => {
   });
 
   test("rejects when towers are not found", done => {
-    const getWifiTowers = require("./getWifiTowers")({
-      ...params,
-      wifiScanner: mockFailingScanner
-    });
+    const scan = sinon.stub(wifiScanner, "scan").callsFake(async callback => callback(mockErr));
+    stubs = [scan];
 
     getWifiTowers().catch(err => {
       expect(err).toEqual(mockErr);

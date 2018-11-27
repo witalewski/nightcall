@@ -5,10 +5,7 @@ const LocalStorage = require("node-localstorage").LocalStorage;
 const state = require("./state")(new LocalStorage(`${process.cwd()}/cache`));
 const getIP = require("./serviceObjects/getIP");
 const findLocationOfIP = require("./serviceObjects/findLocationOfIP");
-const getWifiTowers = require("./serviceObjects/getWifiTowers")({
-  wifiScanner: require("node-wifiscanner"),
-  logger
-});
+const getWifiTowers = require("./serviceObjects/getWifiTowers");
 const findLocationOfWifiTowers = require("./serviceObjects/findLocationOfWifiTowers")(
   {
     logger
