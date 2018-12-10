@@ -2,7 +2,7 @@
 # 🌃 Nightcall
 
 [![Build Status](https://travis-ci.com/witalewski/nightcall.svg?branch=master)](https://travis-ci.com/witalewski/nightcall)
-[![Coverage Status](https://coveralls.io/repos/github/witalewski/nightcall/badge.svg?branch=master)](https://coveralls.io/github/witalewski/nightcall?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/witalewski/nightcall/badge.svg?branch=master)](https://coveralls.io/github/witalewski/nightcall?branch=master)[![Known Vulnerabilities](https://snyk.io/test/github/witalewski/nightcall/badge.svg?targetFile=package.json)](https://snyk.io/test/github/witalewski/nightcall?targetFile=package.json)
 
 Automatically switch between light and dark system themes on sunrise and sunset.
 
