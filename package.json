@@ -17,13 +17,16 @@
     "rimraf": "^2.6.2",
     "suncalc": "1.8.0",
     "wifi-scanner": "0.0.4",
-    "winston": "3.1.0"
+    "winston": "3.1.0",
+    "snyk": "^1.189.0"
   },
   "scripts": {
     "postinstall": "yarn start",
     "start": "node bin/nightcall.js start",
     "test": "jest --coverage --coverageReporters=text-lcov | coveralls",
-    "preuninstall": "node bin/nightcall.js uninstall"
+    "preuninstall": "node bin/nightcall.js uninstall",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "husky": {
     "hooks": {
@@ -44,5 +47,6 @@
     "husky": "^1.1.2",
     "jest": "^23.6.0",
     "sinon": "^6.3.5"
-  }
+  },
+  "snyk": true
 }
